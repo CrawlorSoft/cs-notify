@@ -1,0 +1,32 @@
+.cs-status-area {
+  font-size: 1.0em;
+  padding-left: 5px;
+  font-weight: bold;
+
+  .cs-error {
+    color: red;
+  }
+  .cs-warning {
+    color: darkorange;
+  }
+  .cs-success {
+    color: green;
+  }
+  .cs-info {
+    color: cornflowerblue;
+  }
+
+  @keyframes flash {
+    15%, 50%, 100% {
+      opacity: 1;
+    }
+    0%, 25%, 75% {
+      opacity: 0;
+    }
+  }
+  .new-event {
+    animation-name: flash;
+    -webkit-animation-duration: 2.5s;
+    animation-duration: 2.5s;
+  }
+}

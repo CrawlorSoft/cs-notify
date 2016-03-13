@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CS-Notify Bootstrap Test Page</title>
+    <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <!-- Angular JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+    <script src="../../src/cs-notify.module.js"></script>
+    <script src="../../src/cs-notify.controller.js"></script>
+    <script src="../../src/cs-notify.directive.js"></script>
+    <script src="../../.tmp/cs-notify-status.js"></script>
+    <link rel="stylesheet" href="../../dist/styles/cs-notify-styles.css">
+    <script>
+        angular.module('cs-notify-example', ['cs-notify']);
+    </script>
+    <style type="text/css">
+        html,
+        body {
+            height: 100%;
+            /* The html and body elements cannot have any padding or margin. */
+        }
+        /* Wrapper for page content to push down footer */
+        #wrap {
+            min-height: 100%;
+            height: auto !important;
+            height: 100%;
+            /* Negative indent footer by it's height */
+            margin: 0 auto -60px;
+        }
+
+        /* Set the fixed height of the footer here */
+        #push,
+        #footer {
+            height: 60px;
+        }
+        #footer {
+            background-color: #eee;
+        }
+        .footer-entry {
+            margin: 20px 0;
+        }
+
+        /* Lastly, apply responsive CSS fixes as necessary */
+        @media (max-width: 767px) {
+            #footer {
+                margin-left: -20px;
+                margin-right: -20px;
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+        }
+    </style>
+</head>
+<body ng-app="cs-notify-example">
+    <div id="wrap">
+        <div class="container">
+            <div class="page-header">
+                <h1>CS-Notify Bootstrap Test Page</h1>
+            </div>
+        </div>
+        <div id="push"></div>
+    </div>
+    <div id="footer">
+        <div class="row">
+            <div class="col-md-1 col-xs-3 footer-entry pull-left">Copyright (c) 2016</div>
+            <div class="col-md-10 col-xs-6 footer-entry">
+                <cs-notifications></cs-notifications>
+            </div>
+            <div class="col-md-1 col-xs-3 footer-entry">Anything</div>
+        </div>
+    </div>
+</body>
+</html>
