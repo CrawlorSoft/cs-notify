@@ -32,7 +32,6 @@ angular.module('cs-notify').controller('CSNotificationsController', [
         self.recentNotifications = [new Notification({error: false, warning: false, success: false, info: false, message: ''})];
 
         self.mostRecent = function() {
-            $log.debug('mostRecent idx:  ', (self.recentNotifications.length - 1));
             return self.recentNotifications[self.recentNotifications.length - 1];
         };
 

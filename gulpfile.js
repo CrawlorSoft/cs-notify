@@ -19,7 +19,7 @@ gulp.task('clean', function() {
 
 gulp.task('docs', function() {
     return gulp.src('./src/**/*.js')
-        .pipe(docs.process())
+        .pipe(docs.process({html5Mode: false}))
         .pipe(gulp.dest('./artifacts/docs'));
 });
 
