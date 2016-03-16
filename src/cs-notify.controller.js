@@ -1,6 +1,6 @@
 angular.module('cs-notify').controller('CSNotificationsController', [
-    '$log', '$rootScope', '$timeout',
-    function($log, $rootScope, $timeout) {
+    '$log', '$rootScope', '$timeout', '$scope',
+    function ($log, $rootScope, $timeout, $scope) {
         $log.debug('Creating CSNotificationsController');
         window.rs = $rootScope;
         var self = this;
@@ -31,6 +31,23 @@ angular.module('cs-notify').controller('CSNotificationsController', [
         };
         self.recentNotifications = [new Notification({error: false, warning: false, success: false, info: false, message: ''})];
 
+        self.getIconType = function (notification) {
+            var classString = '';
+            if ($scope.iconSet) {
+                classString = $scope.iconSet.classPrefix ? ($scope.iconSet.classPrefix + ' ') : '';
+                if (notification.error) {
+                    classString += $scope.iconSet.errorIcon ? $scope.iconSet.errorIcon : '';
+                } else if (notification.warning) {
+                    classString += $scope.iconSet.warningIcon ? $scope.iconSet.warningIcon : '';
+                } else if (notification.success) {
+                    classString += $scope.iconSet.successIcon ? $scope.iconSet.successIcon : '';
+                } else if (notification.info) {
+                    classString += $scope.iconSet.infoIcon ? $scope.iconSet.infoIcon : '';
+                }
+            }
+            return classString.trim();
+        };
+
         self.mostRecent = function() {
             return self.recentNotifications[self.recentNotifications.length - 1];
         };
@@ -39,13 +56,12 @@ angular.module('cs-notify').controller('CSNotificationsController', [
             return self.newEventReceived;
         };
 
-        $rootScope.$on('new-notification', function(evt, evtData) {
+        $rootScope.$on('cs-notify-new-notification', function (evt, evtData) {
             evt.stopPropagation();
             self.newEventReceived = false;
             self.recentNotifications.push(new Notification(evtData));
             self.newEventReceived = true;
             $timeout(function() { self.newEventReceived = false; }, 2500);
-            $rootScope.$digest();
         });
     }
 ]);

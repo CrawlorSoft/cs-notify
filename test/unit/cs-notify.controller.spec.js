@@ -3,11 +3,12 @@
     describe('Controller: CSNotificationsController', function () {
         beforeEach(module('cs-notify'));
 
-        var ctrl, rootScope;
+        var ctrl, rootScope, scope;
 
         beforeEach(inject(function($controller, $rootScope) {
             rootScope = $rootScope;
-            ctrl = $controller('CSNotificationsController', {$rootScope: rootScope});
+            scope = rootScope.$new();
+            ctrl = $controller('CSNotificationsController', {$rootScope: rootScope, $scope: scope});
         }));
 
         describe('Initialization', function() {
@@ -20,9 +21,9 @@
             });
         });
 
-        describe('Function: new-notification', function() {
+        describe('Function: cs-notify-new-notification', function () {
             it('should create a new notification on an appropriate $emit', function() {
-                rootScope.$emit('new-notification', {error: true, message: 'Short test message'});
+                rootScope.$emit('cs-notify-new-notification', {error: true, message: 'Short test message'});
                 rootScope.$apply();
                 expect(ctrl.recentNotifications.length).toBe(2);
             });
@@ -44,7 +45,7 @@
                 expect(ctrl.receivedNewEvent()).toBe(false);
             });
             it('should retrieve the newest Notification after it is added', function() {
-                rootScope.$emit('new-notification', {error: true, message: 'Short test message'});
+                rootScope.$emit('cs-notify-new-notification', {error: true, message: 'Short test message'});
                 rootScope.$apply();
                 var notification = ctrl.mostRecent();
                 expect(notification.error).toBe(true);
@@ -62,14 +63,14 @@
             });
             it('should return true after a new Notification is added', function() {
                 expect(ctrl.receivedNewEvent()).toBe(false);
-                rootScope.$emit('new-notification', {error: true, message: 'Short test message'});
+                rootScope.$emit('cs-notify-new-notification', {error: true, message: 'Short test message'});
                 rootScope.$apply();
                 expect(ctrl.receivedNewEvent()).toBe(true);
             });
             it('should return true after a new Notification is added, false after a timeout',
                 inject(function($timeout) {
                     expect(ctrl.receivedNewEvent()).toBe(false);
-                    rootScope.$emit('new-notification', {error: true, message: 'Short test message'});
+                    rootScope.$emit('cs-notify-new-notification', {error: true, message: 'Short test message'});
                     rootScope.$apply();
                     expect(ctrl.receivedNewEvent()).toBe(true);
                     $timeout.flush();
@@ -79,7 +80,7 @@
 
         describe('Function: Notification.getFullMessage()', function() {
             it('should return the empty string if the message is undefined', function() {
-                rootScope.$emit('new-notification', {error: true});
+                rootScope.$emit('cs-notify-new-notification', {error: true});
                 rootScope.$apply();
                 var noti = ctrl.mostRecent();
                 expect(noti.getFullMessage()).toBe('');
@@ -87,7 +88,7 @@
                 expect(noti.message).not.toBeDefined();
             });
             it('should return the empty string if the message is null', function() {
-                rootScope.$emit('new-notification', {error: true, message: null});
+                rootScope.$emit('cs-notify-new-notification', {error: true, message: null});
                 rootScope.$apply();
                 var noti = ctrl.mostRecent();
                 expect(noti.getFullMessage()).toBe('');
@@ -95,7 +96,7 @@
                 expect(noti.message).toBeNull();
             });
             it('should return the exact message if it is less than 43 characters long.', function() {
-                rootScope.$emit('new-notification', {error: true, message: 'Short test message'});
+                rootScope.$emit('cs-notify-new-notification', {error: true, message: 'Short test message'});
                 rootScope.$apply();
                 var noti = ctrl.mostRecent();
                 expect(noti.getFullMessage()).toBe('Short test message');
@@ -107,7 +108,7 @@
                     error: true,
                     message: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
                 };
-                rootScope.$emit('new-notification', evtData);
+                rootScope.$emit('cs-notify-new-notification', evtData);
                 rootScope.$apply();
                 var noti = ctrl.mostRecent();
                 expect(noti.getFullMessage()).toBe(evtData.message);
@@ -119,7 +120,7 @@
                     error: true,
                     message: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
                 };
-                rootScope.$emit('new-notification', evtData);
+                rootScope.$emit('cs-notify-new-notification', evtData);
                 rootScope.$apply();
                 var noti = ctrl.mostRecent();
                 expect(noti.getFullMessage()).toBe(evtData.message);
@@ -131,7 +132,7 @@
                     error: true,
                     message: 'ababababababababababababababababababababababababab'
                 };
-                rootScope.$emit('new-notification', evtData);
+                rootScope.$emit('cs-notify-new-notification', evtData);
                 rootScope.$apply();
                 var noti = ctrl.mostRecent();
                 expect(noti.getFullMessage()).toBe(evtData.message);
@@ -142,7 +143,7 @@
 
         describe('Function:  Notification.getShortMessage()', function() {
             it('should return the empty string if the message is undefined', function() {
-                rootScope.$emit('new-notification', {error: true});
+                rootScope.$emit('cs-notify-new-notification', {error: true});
                 rootScope.$apply();
                 var noti = ctrl.mostRecent();
                 expect(noti.getShortMessage()).toBe('');
@@ -150,7 +151,7 @@
                 expect(noti.message).not.toBeDefined();
             });
             it('should return the empty string if the message is null', function() {
-                rootScope.$emit('new-notification', {error: true, message: null});
+                rootScope.$emit('cs-notify-new-notification', {error: true, message: null});
                 rootScope.$apply();
                 var noti = ctrl.mostRecent();
                 expect(noti.getShortMessage()).toBe('');
@@ -158,7 +159,7 @@
                 expect(noti.message).toBeNull();
             });
             it('should return the exact message if it is less than 43 characters long.', function() {
-                rootScope.$emit('new-notification', {error: true, message: 'Short test message'});
+                rootScope.$emit('cs-notify-new-notification', {error: true, message: 'Short test message'});
                 rootScope.$apply();
                 var noti = ctrl.mostRecent();
                 expect(noti.getShortMessage()).toBe('Short test message');
@@ -170,7 +171,7 @@
                     error: true,
                     message: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
                 };
-                rootScope.$emit('new-notification', evtData);
+                rootScope.$emit('cs-notify-new-notification', evtData);
                 rootScope.$apply();
                 var noti = ctrl.mostRecent();
                 expect(noti.getShortMessage()).toBe(evtData.message);
@@ -182,7 +183,7 @@
                     error: true,
                     message: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
                 };
-                rootScope.$emit('new-notification', evtData);
+                rootScope.$emit('cs-notify-new-notification', evtData);
                 rootScope.$apply();
                 var noti = ctrl.mostRecent();
                 expect(noti.getShortMessage()).toBe(evtData.message.substring(0, 40) + '...');
@@ -194,12 +195,113 @@
                     error: true,
                     message: 'ababababababababababababababababababababababababab'
                 };
-                rootScope.$emit('new-notification', evtData);
+                rootScope.$emit('cs-notify-new-notification', evtData);
                 rootScope.$apply();
                 var noti = ctrl.mostRecent();
                 expect(noti.getShortMessage()).toBe(evtData.message.substring(0, 40) + '...');
                 // Ensure it doesn't affect the original message
                 expect(noti.message).toBe(evtData.message);
+            });
+        });
+
+        describe('Function: getIconType', function () {
+
+            it('should return an empty string if no iconset has been specified regardless of notification type',
+                function () {
+                    delete scope.iconSet;
+                    expect(ctrl.getIconType({error: true, message: 'doh'})).toBe('');
+                    expect(ctrl.getIconType({warning: true, message: 'doh'})).toBe('');
+                    expect(ctrl.getIconType({success: true, message: 'doh'})).toBe('');
+                    expect(ctrl.getIconType({info: true, message: 'doh'})).toBe('');
+                    expect(ctrl.getIconType({message: 'doh'})).toBe('');
+                });
+            describe('iconSet present in scope', function () {
+                beforeEach(inject(function ($controller) {
+                    scope.iconSet = {
+                        classPrefix: 'glyphicon',
+                        errorIcon: 'glyphicon-ban-circle',
+                        warningIcon: 'glyphicon-warning-sign',
+                        successIcon: 'glyphicon-ok-circle',
+                        infoIcon: 'glyphicon-info-sign'
+                    };
+                    ctrl = $controller('CSNotificationsController', {$rootScope: rootScope, $scope: scope});
+                }));
+                it('should return the class prefix only if no notification type is present', function () {
+                    expect(ctrl.getIconType({message: 'doh'})).toBe(scope.iconSet.classPrefix);
+                });
+                it('should return the class classPrefix plus error icon when error is true', function () {
+                    expect(ctrl.getIconType({error: true, message: 'doh'}))
+                        .toBe(scope.iconSet.classPrefix + ' ' + scope.iconSet.errorIcon);
+                });
+                it('should return the class classPrefix plus warning icon when warning is true', function () {
+                    expect(ctrl.getIconType({warning: true, message: 'doh'}))
+                        .toBe(scope.iconSet.classPrefix + ' ' + scope.iconSet.warningIcon);
+                });
+                it('should return the class classPrefix plus info icon when info is true', function () {
+                    expect(ctrl.getIconType({info: true, message: 'doh'}))
+                        .toBe(scope.iconSet.classPrefix + ' ' + scope.iconSet.infoIcon);
+                });
+                it('should return the class classPrefix plus success icon when success is true', function () {
+                    expect(ctrl.getIconType({success: true, message: 'doh'}))
+                        .toBe(scope.iconSet.classPrefix + ' ' + scope.iconSet.successIcon);
+                });
+            });
+            describe('iconSet present in scope but missing icons', function () {
+                beforeEach(inject(function ($controller) {
+                    scope.iconSet = {
+                        classPrefix: 'glyphicon'
+                    };
+                    ctrl = $controller('CSNotificationsController', {$rootScope: rootScope, $scope: scope});
+                }));
+                it('should return the class prefix only if no notification type is present', function () {
+                    expect(ctrl.getIconType({message: 'doh'})).toBe(scope.iconSet.classPrefix);
+                });
+                it('should return the class classPrefix plus error icon when error is true', function () {
+                    expect(ctrl.getIconType({error: true, message: 'doh'}))
+                        .toBe(scope.iconSet.classPrefix);
+                });
+                it('should return the class classPrefix plus warning icon when warning is true', function () {
+                    expect(ctrl.getIconType({warning: true, message: 'doh'}))
+                        .toBe(scope.iconSet.classPrefix);
+                });
+                it('should return the class classPrefix plus info icon when info is true', function () {
+                    expect(ctrl.getIconType({info: true, message: 'doh'}))
+                        .toBe(scope.iconSet.classPrefix);
+                });
+                it('should return the class classPrefix plus success icon when success is true', function () {
+                    expect(ctrl.getIconType({success: true, message: 'doh'}))
+                        .toBe(scope.iconSet.classPrefix);
+                });
+            });
+            describe('iconSet present in scope but missing classPrefix', function () {
+                beforeEach(inject(function ($controller) {
+                    scope.iconSet = {
+                        errorIcon: 'glyphicon-ban-circle',
+                        warningIcon: 'glyphicon-warning-sign',
+                        successIcon: 'glyphicon-ok-circle',
+                        infoIcon: 'glyphicon-info-sign'
+                    };
+                    ctrl = $controller('CSNotificationsController', {$rootScope: rootScope, $scope: scope});
+                }));
+                it('should return the class prefix only if no notification type is present', function () {
+                    expect(ctrl.getIconType({message: 'doh'})).toBe('');
+                });
+                it('should return the class classPrefix plus error icon when error is true', function () {
+                    expect(ctrl.getIconType({error: true, message: 'doh'}))
+                        .toBe(scope.iconSet.errorIcon);
+                });
+                it('should return the class classPrefix plus warning icon when warning is true', function () {
+                    expect(ctrl.getIconType({warning: true, message: 'doh'}))
+                        .toBe(scope.iconSet.warningIcon);
+                });
+                it('should return the class classPrefix plus info icon when info is true', function () {
+                    expect(ctrl.getIconType({info: true, message: 'doh'}))
+                        .toBe(scope.iconSet.infoIcon);
+                });
+                it('should return the class classPrefix plus success icon when success is true', function () {
+                    expect(ctrl.getIconType({success: true, message: 'doh'}))
+                        .toBe(scope.iconSet.successIcon);
+                });
             });
         });
     });

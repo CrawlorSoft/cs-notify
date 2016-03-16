@@ -14,13 +14,76 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <!-- Angular JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+    <!-- Angular Messages -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-messages.js"></script>
     <script src="../../src/cs-notify.module.js"></script>
     <script src="../../src/cs-notify.controller.js"></script>
     <script src="../../src/cs-notify.directive.js"></script>
     <script src="../../.tmp/cs-notify-status.js"></script>
     <link rel="stylesheet" href="../../dist/styles/cs-notify-styles.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <script>
-        angular.module('cs-notify-example', ['cs-notify']);
+        angular.module('cs-notify-example', ['cs-notify', 'ngMessages']).controller('mainController',
+                ['$rootScope', '$scope', function ($rootScope, $scope) {
+                    $rootScope.iconSetGlyphicon = {
+                        id: 0,
+                        name: 'Bootstrap Glyphicon',
+                        classPrefix: 'glyphicon',
+                        errorIcon: 'glyphicon-ban-circle',
+                        warningIcon: 'glyphicon-warning-sign',
+                        successIcon: 'glyphicon-ok-circle',
+                        infoIcon: 'glyphicon-info-sign'
+                    };
+                    $rootScope.iconSetFontAwesome = {
+                        id: 1,
+                        name: 'Font Awesome',
+                        classPrefix: 'fa fa-fw',
+                        errorIcon: 'fa-exclamation-circle',
+                        warningIcon: 'fa-exclamation-triangle',
+                        successIcon: 'fa-check-circle',
+                        infoIcon: 'fa-info-circle'
+                    };
+
+                    $rootScope.selectableNotificationTypes = [
+                        {display: 'Error', value: 'error', id: 1},
+                        {display: 'Warning', value: 'warning', id: 2},
+                        {display: 'Success', value: 'success', id: 3},
+                        {display: 'Info', value: 'info', id: 4},
+                        {display: 'None', value: 'none', id: 0}
+                    ];
+                    $rootScope.selectableIconSets = [$rootScope.iconSetGlyphicon, $rootScope.iconSetFontAwesome];
+                    $rootScope.evt = {
+                        iconSet: $rootScope.selectableIconSets[0],
+                        type: $rootScope.selectableNotificationTypes[4]
+                    };
+
+                    $rootScope.$watch(function () {
+                        return $rootScope.evt.iconSet;
+                    }, function (newval) {
+                        if (newval) {
+                            $rootScope.iconSet = newval;
+                        }
+                    }, true);
+                    $rootScope.$watch(function () {
+                        return $rootScope.evt.message;
+                    }, function (newval) {
+                        if (newval && newval.length > 43) {
+                            $scope['notificationForm'].evtMsg.$error['ellipsised'] = true;
+                            $scope['notificationForm'].evtMsg.$error['full'] = false;
+                        } else {
+                            $scope['notificationForm'].evtMsg.$error['ellipsised'] = false;
+                            $scope['notificationForm'].evtMsg.$error['full'] = true;
+                        }
+                    });
+
+                    $rootScope.sendNotification = function (evt) {
+                        var evtData = {message: evt.message};
+                        evtData[evt.type.value] = true;
+                        $rootScope.iconSet = evt.iconSet;
+                        // Temporary call until notification service is written.
+                        $rootScope.$emit('cs-notify-new-notification', evtData);
+                    };
+                }]);
     </script>
     <style type="text/css">
         html,
@@ -31,7 +94,6 @@
         /* Wrapper for page content to push down footer */
         #wrap {
             min-height: 100%;
-            height: auto !important;
             height: 100%;
             /* Negative indent footer by it's height */
             margin: 0 auto -60px;
@@ -43,6 +105,8 @@
             height: 60px;
         }
         #footer {
+            position: fixed;
+            width: 100%;
             background-color: #eee;
         }
         .footer-entry {
@@ -60,22 +124,68 @@
         }
     </style>
 </head>
-<body ng-app="cs-notify-example">
+<body ng-app="cs-notify-example" ng-controller="mainController">
     <div id="wrap">
         <div class="container">
-            <div class="page-header">
+            <div class="page-header text-center">
                 <h1>CS-Notify Bootstrap Test Page</h1>
             </div>
+            <form name="notificationForm" novalidate>
+                <div class="well col-md-10 col-md-offset-1" id="notificationControls">
+                    <div class="row">
+                        <div class="col-md-12" id="iconFontSelectionDiv">
+                            <label>
+                                Icon Font:
+                                <select data-ng-options="set as set.name for set in selectableIconSets track by set.id"
+                                        data-ng-model="evt.iconSet" style="width: 100%;">
+                                </select>
+                            </label>
+                            <div class="text-info small">Applies globally without sending a notification</div>
+                        </div>
+                    </div>
+                    <div class="row">&nbsp;</div>
+                    <div class="row">
+                        <div class="col-md-5" id="notificationTypeSelectionDiv">
+                            <label>
+                                Notification Type:
+                                <select data-ng-options="type as type.display for type in selectableNotificationTypes track by type.id"
+                                        data-ng-model="evt.type" style="width: 100%;">
+                                </select>
+                            </label>
+                        </div>
+                        <div class="col-md-6" id="messageAndGoDiv">
+                            <div class="col-md-10" id="msgDiv">
+                                <label>
+                                    Message:
+                                    <input type="text" name="evtMsg" data-ng-model="evt.message"
+                                           placeholder="Enter message content" style="width:100%;" required>
+                                </label>
+                                <div data-ng-messages="notificationForm.evtMsg.$error" class="text-danger" role="alert">
+                                    <div data-ng-message="required">Please enter a message to display.</div>
+                                    <div data-ng-message="ellipsised">The message will be ellipsised.</div>
+                                    <div data-ng-message="full">The entire message will be visible.</div>
+                                </div>
+                            </div>
+                            <div class="col-md-2" id="btnDiv">
+                                <button class="btn btn-success" data-ng-click="sendNotification(evt)"
+                                        data-ng-disabled="!evt.message || evt.message.length === 0">
+                                    <i class="fa fa-fw fa-check-square-o"></i> Notify!
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
         <div id="push"></div>
     </div>
     <div id="footer">
         <div class="row">
-            <div class="col-md-1 col-xs-3 footer-entry pull-left">Copyright (c) 2016</div>
-            <div class="col-md-10 col-xs-6 footer-entry">
-                <cs-notifications></cs-notifications>
+            <div class="col-md-2 col-xs-3 footer-entry pull-left">Copyright (c) 2016</div>
+            <div class="col-md-8 col-xs-6 footer-entry">
+                <cs-notifications data-icon-set="evt.iconSet"></cs-notifications>
             </div>
-            <div class="col-md-1 col-xs-3 footer-entry">Anything</div>
+            <div class="col-md-1 col-xs-3 footer-entry text-right pull-right">Anything</div>
         </div>
     </div>
 </body>

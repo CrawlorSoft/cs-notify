@@ -1,6 +1,6 @@
 <div class="cs-status-area">
     <span data-ng-class="{'cs-error': csnctrl.mostRecent().error, 'cs-warning': csnctrl.mostRecent().warning, 'cs-success': csnctrl.mostRecent().success, 'cs-info': csnctrl.mostRecent().info, 'new-event': csnctrl.receivedNewEvent()}">
-        <i class="glyphicon" data-ng-class="{'glyphicon-ban-circle': csnctrl.mostRecent().error, 'glyphicon-warning-sign': csnctrl.mostRecent().warning, 'glyphicon-ok-circle': csnctrl.mostRecent().success, 'glyphicon-info-sign': csnctrl.mostRecent().info}"></i>
+        <i data-ng-attr-class="{{csnctrl.getIconType(csnctrl.mostRecent())}}"></i>
         {{csnctrl.mostRecent().getShortMessage()}}
     </span>
 </div>
