@@ -18,7 +18,22 @@
                 expect(typeof ctrl.mostRecent).toBe('function');
                 expect(ctrl.receivedNewEvent).toBeDefined();
                 expect(typeof ctrl.receivedNewEvent).toBe('function');
+                expect(scope.ellipsisLength).toBe(43);
             });
+            it('should initialize the ellipsisLength to the correct value', inject(function ($controller) {
+                scope.ellipsisLength = '5';
+                $controller('CSNotificationsController', {$rootScope: rootScope, $scope: scope});
+                expect(scope.ellipsisLength).toBe(5);
+                scope.ellipsisLength = 95;
+                $controller('CSNotificationsController', {$rootScope: rootScope, $scope: scope});
+                expect(scope.ellipsisLength).toBe(95);
+            }));
+            it('should initialize the ellipsisLength to the default value if a non-numeric value is present',
+                inject(function ($controller) {
+                    scope.ellipsisLength = 'incorrect value';
+                    $controller('CSNotificationsController', {$rootScope: rootScope, $scope: scope});
+                    expect(scope.ellipsisLength).toBe(43);
+                }));
         });
 
         describe('Function: cs-notify-new-notification', function () {

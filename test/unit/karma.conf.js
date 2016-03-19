@@ -25,6 +25,7 @@ module.exports = function(config) {
       'src/cs-notify.module.js',
       'src/cs-notify.controller.js',
       'src/cs-notify.directive.js',
+      'src/cs-notify.service.js',
       'test/unit/*.spec.js'
     ],
 

@@ -9,8 +9,10 @@ angular.module('cs-notify').controller('CSNotificationsController', [
 
         try {
             $scope.ellipsisLength = $scope.ellipsisLength ? parseInt($scope.ellipsisLength) : 43;
-        } catch (nfe) {
-            $scope.ellipsisLength = 43;
+        } finally {
+            if (isNaN($scope.ellipsisLength)) {
+                $scope.ellipsisLength = 43;
+            }
         }
 
         function Notification(data) {

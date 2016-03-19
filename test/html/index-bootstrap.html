@@ -17,6 +17,7 @@
     <!-- Angular Messages -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-messages.js"></script>
     <script src="../../src/cs-notify.module.js"></script>
+    <script src="../../src/cs-notify.service.js"></script>
     <script src="../../src/cs-notify.controller.js"></script>
     <script src="../../src/cs-notify.directive.js"></script>
     <script src="../../.tmp/cs-notify-status.js"></script>
@@ -24,25 +25,14 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <script>
         angular.module('cs-notify-example', ['cs-notify', 'ngMessages']).controller('mainController',
-                ['$rootScope', '$scope', function ($rootScope, $scope) {
-                    $rootScope.iconSetGlyphicon = {
-                        id: 0,
-                        name: 'Bootstrap Glyphicon',
-                        classPrefix: 'glyphicon',
-                        errorIcon: 'glyphicon-ban-circle',
-                        warningIcon: 'glyphicon-warning-sign',
-                        successIcon: 'glyphicon-ok-circle',
-                        infoIcon: 'glyphicon-info-sign'
-                    };
-                    $rootScope.iconSetFontAwesome = {
-                        id: 1,
-                        name: 'Font Awesome',
-                        classPrefix: 'fa fa-fw',
-                        errorIcon: 'fa-exclamation-circle',
-                        warningIcon: 'fa-exclamation-triangle',
-                        successIcon: 'fa-check-circle',
-                        infoIcon: 'fa-info-circle'
-                    };
+                ['$rootScope', '$scope', 'csNotificationService', function ($rootScope, $scope, csns) {
+                    $rootScope.iconSetGlyphicon = angular.copy(csns.bootstrapGlyphiconIconSet);
+                    $rootScope.iconSetFontAwesome = angular.copy(csns.fontAwesomeIconSet);
+                    <!-- Note: The following four lines are needed only to permit on the fly changes to the icon set -->
+                    $rootScope.iconSetGlyphicon.id = 0;
+                    $rootScope.iconSetGlyphicon.name = 'Bootstrap Glyphicon';
+                    $rootScope.iconSetFontAwesome.id = 1;
+                    $rootScope.iconSetFontAwesome.name = 'Font Awesome';
 
                     $rootScope.selectableNotificationTypes = [
                         {display: 'Error', value: 'error', id: 1},

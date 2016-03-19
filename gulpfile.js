@@ -43,7 +43,11 @@ gulp.task('test', function() {
     }).start();
 });
 
+gulp.task('compile', function () {
+    console.log('TODO:  Add compile steps');
+});
+
 // Intentionally do not clean before a build
-gulp.task('default', ['templates:dist', 'styles:dist', 'docs', 'test'], function() {
+gulp.task('default', ['templates:dist', 'styles:dist', 'docs', 'compile', 'test'], function () {
 });
 
