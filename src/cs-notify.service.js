@@ -16,12 +16,13 @@ angular.module('cs-notify')
      *   * A default [Bootstrap Glyphicon](http://getbootstrap.com/components/#glyphicons) icon set definition.
      *
      * @param {Object} $rootScope The rootScope to use to emit notification messages.
+     * @param {Object} $log The log object to use in the case of errors.
      */
-    .factory('csNotificationService', ['$rootScope', function ($rootScope) {
+    .factory('csNotificationService', ['$rootScope', '$log', function ($rootScope, $log) {
         var serv = {};
 
         serv.maxNotifications = 10;
-        serv.notifications = [];
+        var notifications = [];
 
         /**
          * @ngdoc object
@@ -46,6 +47,69 @@ angular.module('cs-notify')
             ICONLESS: 'other'
         });
 
+        function sliceNotifications() {
+            var start = notifications.length - serv.maxNotifications;
+            var end = notifications.length + 1;
+            notifications = notifications.slice(start, end);
+        }
+
+        /**
+         * @ngdoc method
+         * @name changeNotificationMaximum
+         * @methodOf cs-notify.service:csNotificationService
+         * @param {number} max The maximum number of notifications the `csNotificationService` should retain in memory
+         * at any given point.
+         * @description
+         * Adjusts the maximum number of notification events which should be retained in memory at any given point to
+         * any value between 0 and infinity.
+         *
+         * If the maximum chosen is less than the current number of retained notifications, the excess notifications
+         * will be immediately removed from the queue in a First In First Out (FIFO) order with no way to retrieve the
+         * messages in the future, even if the maximum is increased immediately to its previous value or higher.
+         *
+         * If the maximum chosen is greater than or equal to the current number of retained notifications, no
+         * notifications will be lost until the new threshold is passed.
+         */
+        serv.changeNotificationMaximum = function (max) {
+            var newMax = parseInt(max);
+            if (isNaN(newMax) || newMax < 0) {
+                $log.error('cs-notify: new maximum notifications of', max, ' is invalid, must be a positive integer.');
+                return;
+            }
+
+            serv.maxNotifications = newMax;
+            if (notifications.length > serv.maxNotifications) {
+                sliceNotifications();
+            }
+        };
+
+        /**
+         * @ngdoc method
+         * @name clearNotifications
+         * @methodOf cs-notify.service:csNotificationService
+         * @description
+         * Permanently clears any notifications which have been generated / emitted by this service with no chance of
+         * retrieval.
+         */
+        serv.clearNotifications = function () {
+            notifications = [];
+        };
+
+        /**
+         * @ngdoc method
+         * @name getNotifications
+         * @methodOf cs-notify.service:csNotificationService
+         * @returns {Array} An array of the last _x_ notification objects.
+         * @description
+         * Returns a copy of the last _maxNotifications_ notification objects which have been sent by the
+         * `csNotificationService`.  If _maxNotifications_ was recently adjusted to a higher value, any notifications
+         * which were rotated out before the increase in the notification limit will not be reported and are lost
+         * permanently.
+         */
+        serv.getNotifications = function () {
+            return angular.copy(notifications);
+        };
+
         /**
          * @ngdoc method
          * @name sendNotification
@@ -63,11 +127,80 @@ angular.module('cs-notify')
             var evtData = {message: msg};
             evtData[notificationType] = true;
             $rootScope.$emit('cs-notify-new-notification', evtData);
-            serv.notifications.push(evtData);
-            if (serv.notifications.length > serv.maxNotifications) {
-                var start = serv.notifications.length - serv.maxNotifications;
-                serv.notifications = serv.notifications.slice(start, serv.maxNotifications + 1);
+            notifications.push(evtData);
+            if (notifications.length > serv.maxNotifications) {
+                sliceNotifications();
             }
+        };
+
+        /**
+         * @ngdoc method
+         * @name sendErrorNotification
+         * @methodOf cs-notify.service:csNotificationService
+         * @param {string} msg  The message to send as an error notification.
+         * @description
+         * A basic helper method to send the provided message as an error notification.
+         *
+         * See sendNotification for more information.
+         */
+        serv.sendErrorNotification = function (msg) {
+            serv.sendNotification(serv.NOTIFICATION_TYPE.ERROR, msg);
+        };
+
+        /**
+         * @ngdoc method
+         * @name sendWarningNotification
+         * @methodOf cs-notify.service:csNotificationService
+         * @param {string} msg  The message to send as an warning notification.
+         * @description
+         * A basic helper method to send the provided message as a warning notification.
+         *
+         * See sendNotification for more information.
+         */
+        serv.sendWarningNotification = function (msg) {
+            serv.sendNotification(serv.NOTIFICATION_TYPE.WARNING, msg);
+        };
+
+        /**
+         * @ngdoc method
+         * @name sendSuccessNotification
+         * @methodOf cs-notify.service:csNotificationService
+         * @param {string} msg  The message to send as an success notification.
+         * @description
+         * A basic helper method to send the provided message as a success notification.
+         *
+         * See sendNotification for more information.
+         */
+        serv.sendSuccessNotification = function (msg) {
+            serv.sendNotification(serv.NOTIFICATION_TYPE.SUCCESS, msg);
+        };
+
+        /**
+         * @ngdoc method
+         * @name sendInfoNotification
+         * @methodOf cs-notify.service:csNotificationService
+         * @param {string} msg  The message to send as an info notification.
+         * @description
+         * A basic helper method to send the provided message as an info notification.
+         *
+         * See sendNotification for more information.
+         */
+        serv.sendInfoNotification = function (msg) {
+            serv.sendNotification(serv.NOTIFICATION_TYPE.INFO, msg);
+        };
+
+        /**
+         * @ngdoc method
+         * @name sendIconlessNotification
+         * @methodOf cs-notify.service:csNotificationService
+         * @param {string} msg  The message to send as an iconless notification.
+         * @description
+         * A basic helper method to send the provided message as an iconless notification.
+         *
+         * See sendNotification for more information.
+         */
+        serv.sendIconlessNotification = function (msg) {
+            serv.sendNotification(serv.NOTIFICATION_TYPE.ICONLESS, msg);
         };
 
         /**
