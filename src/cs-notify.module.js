@@ -33,5 +33,8 @@
  * tying the user down to any one particular font or icon family.  The only restriction is that the icon set must
  * currently be an icon font such as [Bootstrap Glyphicons](http://getbootstrap.com/components/#glyphicons) or
  * [Font Awesome](http://fontawesome.io).
+ *
+ * For detailed usage information on the {@link cs-notify.directive:cs-notifications cs-notifications} directive, please
+ * see its specific documentation.
  */
 angular.module('cs-notify', []);

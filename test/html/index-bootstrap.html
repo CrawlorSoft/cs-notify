@@ -57,6 +57,8 @@
                         type: $rootScope.selectableNotificationTypes[4]
                     };
 
+                    $scope.ellipsisLength = 43;
+
                     $rootScope.$watch(function () {
                         return $rootScope.evt.iconSet;
                     }, function (newval) {
@@ -67,7 +69,20 @@
                     $rootScope.$watch(function () {
                         return $rootScope.evt.message;
                     }, function (newval) {
-                        if (newval && newval.length > 43) {
+                        if (newval && newval.length > $scope.ellipsisLength) {
+                            $scope['notificationForm'].evtMsg.$error['ellipsised'] = true;
+                            $scope['notificationForm'].evtMsg.$error['full'] = false;
+                        } else {
+                            $scope['notificationForm'].evtMsg.$error['ellipsised'] = false;
+                            $scope['notificationForm'].evtMsg.$error['full'] = true;
+                        }
+                    });
+
+                    $scope.$watch('ellipsisLength', function (newval) {
+                        if (!$rootScope.evt.message) {
+                            return;
+                        }
+                        if ($rootScope.evt.message.length > newval) {
                             $scope['notificationForm'].evtMsg.$error['ellipsised'] = true;
                             $scope['notificationForm'].evtMsg.$error['full'] = false;
                         } else {
@@ -133,7 +148,7 @@
             <form name="notificationForm" novalidate>
                 <div class="well col-md-10 col-md-offset-1" id="notificationControls">
                     <div class="row">
-                        <div class="col-md-12" id="iconFontSelectionDiv">
+                        <div class="col-md-6" id="iconFontSelectionDiv">
                             <label>
                                 Icon Font:
                                 <select data-ng-options="set as set.name for set in selectableIconSets track by set.id"
@@ -141,6 +156,21 @@
                                 </select>
                             </label>
                             <div class="text-info small">Applies globally without sending a notification</div>
+                        </div>
+                        <div class="col-md-6" id="ellipsislengthSelectionDiv">
+                            <label>
+                                Max Length Before Ellipsis Added:
+                                <div>
+                                    <input type="number" min="1" max="255" data-ng-model="ellipsisLength"
+                                           name="ellipsisPoint" required>
+                                </div>
+                            </label>
+                            <div data-ng-messages="notificationForm.ellipsisPoint.$error" class="text-danger"
+                                 role="alert">
+                                <div data-ng-message="required">Please enter a value to add an ellipsis at.</div>
+                                <div data-ng-message="min">The ellipsis point must be positive.</div>
+                                <div data-ng-message="max">The ellipsis point must be < 256.</div>
+                            </div>
                         </div>
                     </div>
                     <div class="row">&nbsp;</div>
@@ -183,7 +213,7 @@
         <div class="row">
             <div class="col-md-2 col-xs-3 footer-entry pull-left">Copyright (c) 2016</div>
             <div class="col-md-8 col-xs-6 footer-entry">
-                <cs-notifications data-icon-set="evt.iconSet"></cs-notifications>
+                <cs-notifications data-icon-set="evt.iconSet" ellipsis-length="{{ellipsisLength}}"></cs-notifications>
             </div>
             <div class="col-md-1 col-xs-3 footer-entry text-right pull-right">Anything</div>
         </div>

@@ -7,6 +7,12 @@ angular.module('cs-notify').controller('CSNotificationsController', [
 
         self.newEventReceived = false;
 
+        try {
+            $scope.ellipsisLength = $scope.ellipsisLength ? parseInt($scope.ellipsisLength) : 43;
+        } catch (nfe) {
+            $scope.ellipsisLength = 43;
+        }
+
         function Notification(data) {
             this.error = data.error;
             this.warning = data.warning;
@@ -17,7 +23,7 @@ angular.module('cs-notify').controller('CSNotificationsController', [
         Notification.prototype.getShortMessage = function() {
             if (!this.message) {
                 return '';
-            } else if (this.message.length > 43) {
+            } else if (this.message.length > $scope.ellipsisLength) {
                 return this.message.substring(0, 40) + '...';
             } else {
                 return this.message;
