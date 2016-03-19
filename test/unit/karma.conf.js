@@ -15,7 +15,8 @@ module.exports = function(config) {
     plugins: [
       'karma-coverage',
       'karma-jasmine',
-      'karma-phantomjs-launcher'
+      'karma-phantomjs-launcher',
+      'karma-html-reporter'
     ],
 
     // list of files / patterns to load in the browser
@@ -38,7 +39,7 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress', 'coverage'],
+    reporters: ['progress', 'coverage', 'html'],
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
@@ -49,6 +50,14 @@ module.exports = function(config) {
     coverageReporter: {
       type: 'html',
       dir: 'artifacts/coverage/'
+    },
+
+    htmlReporter: {
+      outputDir: 'artifacts/unit-testing/',
+      focusOnFailures: true,
+      urlFriendlyName: true,
+      preserveDescribeNesting: true,
+      foldAll: true
     },
 
     // web server port
