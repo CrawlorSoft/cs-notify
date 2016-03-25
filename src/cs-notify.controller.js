@@ -1,7 +1,6 @@
 angular.module('cs-notify').controller('CSNotificationsController', [
-    '$log', '$rootScope', '$timeout', '$scope', 'csNotificationService',
-    function ($log, $rootScope, $timeout, $scope, csNotificationService) {
-        $log.debug('Creating CSNotificationsController');
+    '$rootScope', '$timeout', '$scope', 'csNotificationService',
+    function ($rootScope, $timeout, $scope, csNotificationService) {
         window.rs = $rootScope;
         var self = this;
 

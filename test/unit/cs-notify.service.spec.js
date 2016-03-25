@@ -511,19 +511,19 @@
                 logServ = $log;
                 logServ.reset();
             }));
-            it('should log an error message if max is less than 0', function () {
+            it('should log a warning message if max is less than 0', function () {
                 serv.changeNotificationMaximum(-3);
-                expect(logServ.error.logs.length).toBe(1);
-                expect(logServ.error.logs[0].length).toBe(3);
-                expect(logServ.error.logs[0]).toEqual(
+                expect(logServ.warn.logs.length).toBe(1);
+                expect(logServ.warn.logs[0].length).toBe(3);
+                expect(logServ.warn.logs[0]).toEqual(
                     ['cs-notify: new maximum notifications of', -3, ' is invalid, must be a positive integer.']);
                 expect(serv.maxNotifications).toBe(10);
             });
-            it('should log an error message if max is not an integer', function () {
+            it('should log a warning message if max is not an integer', function () {
                 serv.changeNotificationMaximum('Bob');
-                expect(logServ.error.logs.length).toBe(1);
-                expect(logServ.error.logs[0].length).toBe(3);
-                expect(logServ.error.logs[0]).toEqual(
+                expect(logServ.warn.logs.length).toBe(1);
+                expect(logServ.warn.logs[0].length).toBe(3);
+                expect(logServ.warn.logs[0]).toEqual(
                     ['cs-notify: new maximum notifications of', 'Bob', ' is invalid, must be a positive integer.']);
                 expect(serv.maxNotifications).toBe(10);
             });
@@ -707,6 +707,11 @@
             });
         });
         describe('Function: setEllipsisLength', function () {
+            var logServ;
+            beforeEach(inject(function ($log) {
+                logServ = $log;
+                logServ.reset();
+            }));
             it('should have a default value of 43', function () {
                 expect(CSNotification.prototype.ellipsisLength).toBe(43);
             });
@@ -714,17 +719,37 @@
                 serv.setEllipsisLength(6);
                 expect(CSNotification.prototype.ellipsisLength).toBe(6);
             });
-            it('should do nothing if the ellipsis value is undefined, NaN, null or < 3', function () {
-                serv.setEllipsisLength(6);
-                expect(CSNotification.prototype.ellipsisLength).toBe(6);
-                serv.setEllipsisLength();
-                expect(CSNotification.prototype.ellipsisLength).toBe(6);
-                serv.setEllipsisLength(null);
-                expect(CSNotification.prototype.ellipsisLength).toBe(6);
-                serv.setEllipsisLength(undefined);
-                expect(CSNotification.prototype.ellipsisLength).toBe(6);
+            it('should log a warning message if ellipsis point is less than 3', function () {
                 serv.setEllipsisLength(2);
+                expect(logServ.warn.logs.length).toBe(1);
+                expect(logServ.warn.logs[0].length).toBe(1);
+                expect(logServ.warn.logs[0]).toEqual(
+                    ['cs-notify: new ellipsis point must be an integer >= 3, not "2"']);
                 expect(CSNotification.prototype.ellipsisLength).toBe(6);
+            });
+            it('should log a warning message if ellipsis point is not an integer', function () {
+                serv.setEllipsisLength('Bob');
+                expect(logServ.warn.logs.length).toBe(1);
+                expect(logServ.warn.logs[0].length).toBe(1);
+                expect(logServ.warn.logs[0]).toEqual(
+                    ['cs-notify: new ellipsis point must be an integer >= 3, not "Bob"']);
+                expect(CSNotification.prototype.ellipsisLength).toBe(6);
+            });
+            it('should log a warning message if ellipsis point null', function () {
+                serv.setEllipsisLength(null);
+                expect(logServ.warn.logs.length).toBe(1);
+                expect(logServ.warn.logs[0].length).toBe(1);
+                expect(logServ.warn.logs[0]).toEqual(
+                    ['cs-notify: new ellipsis point must be an integer >= 3, not "null"']);
+                expect(serv.maxNotifications).toBe(10);
+            });
+            it('should log a warning message if ellipsis point is undefined', function () {
+                serv.setEllipsisLength();
+                expect(logServ.warn.logs.length).toBe(1);
+                expect(logServ.warn.logs[0].length).toBe(1);
+                expect(logServ.warn.logs[0]).toEqual(
+                    ['cs-notify: new ellipsis point must be an integer >= 3, not "undefined"']);
+                expect(serv.maxNotifications).toBe(10);
             });
         });
 

@@ -150,7 +150,7 @@ angular.module('cs-notify')
         serv.changeNotificationMaximum = function (max) {
             var newMax = parseInt(max);
             if (isNaN(newMax) || newMax < 0) {
-                $log.error('cs-notify: new maximum notifications of', max, ' is invalid, must be a positive integer.');
+                $log.warn('cs-notify: new maximum notifications of', max, ' is invalid, must be a positive integer.');
                 return;
             }
 
@@ -401,6 +401,7 @@ angular.module('cs-notify')
         serv.setEllipsisLength = function (ellipsisPoint) {
             var pt = parseInt(ellipsisPoint);
             if (isNaN(pt) || !pt || pt < 3) {
+                $log.warn('cs-notify: new ellipsis point must be an integer >= 3, not "' + ellipsisPoint + '"');
                 return;
             }
             CSNotification.prototype.ellipsisLength = pt;
