@@ -79,14 +79,29 @@
                             $scope['notificationForm'].evtMsg.$error['ellipsised'] = false;
                             $scope['notificationForm'].evtMsg.$error['full'] = true;
                         }
+                        csns.setEllipsisLength($scope.ellipsisLength);
                     });
 
                     $rootScope.sendNotification = function (evt) {
-                        var evtData = {message: evt.message};
-                        evtData[evt.type.value] = true;
+                        var func = csns.sendIconlessNotification;
+                        switch (evt.type.value) {
+                            case 'error':
+                                func = csns.sendErrorNotification;
+                                break;
+                            case 'success':
+                                func = csns.sendSuccessNotification;
+                                break;
+                            case 'info':
+                                func = csns.sendInfoNotification;
+                                break;
+                            case 'warning':
+                                func = csns.sendWarningNotification;
+                                break;
+                            default:
+                                func = csns.sendIconlessNotification;
+                        }
                         $rootScope.iconSet = evt.iconSet;
-                        // Temporary call until notification service is written.
-                        $rootScope.$emit('cs-notify-new-notification', evtData);
+                        func(evt.message);
                     };
                 }]);
     </script>

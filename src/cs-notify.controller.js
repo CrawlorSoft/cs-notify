@@ -1,6 +1,6 @@
 angular.module('cs-notify').controller('CSNotificationsController', [
-    '$log', '$rootScope', '$timeout', '$scope',
-    function ($log, $rootScope, $timeout, $scope) {
+    '$log', '$rootScope', '$timeout', '$scope', 'csNotificationService',
+    function ($log, $rootScope, $timeout, $scope, csNotificationService) {
         $log.debug('Creating CSNotificationsController');
         window.rs = $rootScope;
         var self = this;
@@ -14,36 +14,15 @@ angular.module('cs-notify').controller('CSNotificationsController', [
             if (isNaN($scope.ellipsisLength)) {
                 $scope.ellipsisLength = 43;
             }
+            csNotificationService.setEllipsisLength($scope.ellipsisLength);
         }
 
-        function Notification(data) {
-            this.error = data.error;
-            this.warning = data.warning;
-            this.success = data.success;
-            this.info = data.info;
-            this.message = data.message;
-        }
-        Notification.prototype.getShortMessage = function() {
-            if (!this.message) {
-                return '';
-            } else if (this.message.length > $scope.ellipsisLength) {
-                return this.message.substring(0, 40) + '...';
-            } else {
-                return this.message;
-            }
-        };
-        Notification.prototype.getFullMessage = function() {
-            if (!this.message) {
-                return '';
-            }
-            return this.message;
-        };
-        self.recentNotifications = [new Notification({error: false, warning: false, success: false, info: false, message: ''})];
-        self.invertedNotifications = angular.copy(self.recentNotifications).reverse();
+        self.recentNotifications = csNotificationService.getNotifications();
+        self.invertedNotifications = csNotificationService.getNotifications().reverse();
 
         self.getIconType = function (notification) {
             var classString = '';
-            if ($scope.iconSet) {
+            if (notification && $scope.iconSet) {
                 classString = $scope.iconSet.classPrefix ? ($scope.iconSet.classPrefix + ' ') : '';
                 if (notification.error) {
                     classString += $scope.iconSet.errorIcon ? $scope.iconSet.errorIcon : '';
@@ -70,11 +49,11 @@ angular.module('cs-notify').controller('CSNotificationsController', [
             return self.invertedNotifications;
         };
 
-        $rootScope.$on('cs-notify-new-notification', function (evt, evtData) {
+        $rootScope.$on('cs-notify-new-notification', function (evt) {
             evt.stopPropagation();
             self.newEventReceived = false;
-            self.recentNotifications.push(new Notification(evtData));
-            self.invertedNotifications = angular.copy(self.recentNotifications).reverse();
+            self.recentNotifications = csNotificationService.getNotifications();
+            self.invertedNotifications = csNotificationService.getNotifications().reverse();
             self.newEventReceived = true;
             $timeout(function() { self.newEventReceived = false; }, 2500);
         });

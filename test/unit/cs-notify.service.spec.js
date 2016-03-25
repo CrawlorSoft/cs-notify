@@ -28,13 +28,12 @@
                 expect(serv.bootstrapGlyphiconIconSet.successIcon).toBe('glyphicon-ok-circle');
                 expect(serv.bootstrapGlyphiconIconSet.infoIcon).toBe('glyphicon-info-sign');
                 expect(Object.isFrozen(serv.bootstrapGlyphiconIconSet)).toBe(true);
-                expect(serv.NOTIFICATION_TYPE).toBeDefined();
-                expect(Object.isFrozen(serv.NOTIFICATION_TYPE)).toBe(true);
-                expect(serv.NOTIFICATION_TYPE.ERROR).toBe('error');
-                expect(serv.NOTIFICATION_TYPE.SUCCESS).toBe('success');
-                expect(serv.NOTIFICATION_TYPE.WARNING).toBe('warning');
-                expect(serv.NOTIFICATION_TYPE.INFO).toBe('info');
-                expect(serv.NOTIFICATION_TYPE.ICONLESS).toBe('other');
+                expect(CS_NOTIFICATION_TYPE).toBeDefined();
+                expect(CS_NOTIFICATION_TYPE.ERROR).toBe('error');
+                expect(CS_NOTIFICATION_TYPE.SUCCESS).toBe('success');
+                expect(CS_NOTIFICATION_TYPE.WARNING).toBe('warning');
+                expect(CS_NOTIFICATION_TYPE.INFO).toBe('info');
+                expect(CS_NOTIFICATION_TYPE.ICONLESS).toBe('other');
             });
             it('should have the correct methods', function () {
                 expect(serv.sendNotification).toBeDefined();
@@ -61,7 +60,7 @@
                 eventData = undefined;
             });
             it('should emit a cs-notify-new-notification event with the type error', function () {
-                serv.sendNotification(serv.NOTIFICATION_TYPE.ERROR, notificationMsg);
+                serv.sendNotification(CS_NOTIFICATION_TYPE.ERROR, notificationMsg);
                 rootScope.$apply();
                 expect(listenerTriggered).toBe(true);
                 expect(eventType).toBeDefined();
@@ -74,7 +73,7 @@
                 expect(eventData.other).not.toBeDefined();
             });
             it('should emit a cs-notify-new-notification event with the type success', function () {
-                serv.sendNotification(serv.NOTIFICATION_TYPE.SUCCESS, notificationMsg);
+                serv.sendNotification(CS_NOTIFICATION_TYPE.SUCCESS, notificationMsg);
                 rootScope.$apply();
                 expect(listenerTriggered).toBe(true);
                 expect(eventType).toBeDefined();
@@ -87,7 +86,7 @@
                 expect(eventData.other).not.toBeDefined();
             });
             it('should emit a cs-notify-new-notification event with the type warning', function () {
-                serv.sendNotification(serv.NOTIFICATION_TYPE.WARNING, notificationMsg);
+                serv.sendNotification(CS_NOTIFICATION_TYPE.WARNING, notificationMsg);
                 rootScope.$apply();
                 expect(listenerTriggered).toBe(true);
                 expect(eventType).toBeDefined();
@@ -100,7 +99,7 @@
                 expect(eventData.other).not.toBeDefined();
             });
             it('should emit a cs-notify-new-notification event with the type info', function () {
-                serv.sendNotification(serv.NOTIFICATION_TYPE.INFO, notificationMsg);
+                serv.sendNotification(CS_NOTIFICATION_TYPE.INFO, notificationMsg);
                 rootScope.$apply();
                 expect(listenerTriggered).toBe(true);
                 expect(eventType).toBeDefined();
@@ -113,7 +112,7 @@
                 expect(eventData.other).not.toBeDefined();
             });
             it('should emit a cs-notify-new-notification event with the type other', function () {
-                serv.sendNotification(serv.NOTIFICATION_TYPE.ICONLESS, notificationMsg);
+                serv.sendNotification(CS_NOTIFICATION_TYPE.ICONLESS, notificationMsg);
                 rootScope.$apply();
                 expect(listenerTriggered).toBe(true);
                 expect(eventType).toBeDefined();
@@ -126,95 +125,96 @@
                 expect(eventData.error).not.toBeDefined();
             });
             it('should log each new notification to an internal log', function () {
+                // Should not return an empty notification list.
                 expect(serv.getNotifications().length).toBe(0);
-                serv.sendNotification(serv.NOTIFICATION_TYPE.ERROR, notificationMsg);
+                serv.sendNotification(CS_NOTIFICATION_TYPE.ERROR, notificationMsg);
                 rootScope.$apply();
                 expect(serv.getNotifications().length).toBe(1);
-                expect(serv.getNotifications()).toEqual([{error: true, message: notificationMsg}]);
-                serv.sendNotification(serv.NOTIFICATION_TYPE.SUCCESS, notificationMsg);
+                expect(serv.getNotifications()).toEqual([new CSNotification({error: true, message: notificationMsg})]);
+                serv.sendNotification(CS_NOTIFICATION_TYPE.SUCCESS, notificationMsg);
                 rootScope.$apply();
                 expect(serv.getNotifications().length).toBe(2);
-                expect(serv.getNotifications()).toEqual([{error: true, message: notificationMsg},
-                    {success: true, message: notificationMsg}]);
+                expect(serv.getNotifications()).toEqual([new CSNotification({error: true, message: notificationMsg}),
+                    new CSNotification({success: true, message: notificationMsg})]);
             });
             it('should not trim the array with up to 10 logs by default', function () {
-                serv.sendNotification(serv.NOTIFICATION_TYPE.ERROR, notificationMsg);
-                serv.sendNotification(serv.NOTIFICATION_TYPE.SUCCESS, notificationMsg);
-                serv.sendNotification(serv.NOTIFICATION_TYPE.WARNING, notificationMsg);
-                serv.sendNotification(serv.NOTIFICATION_TYPE.INFO, notificationMsg);
-                serv.sendNotification(serv.NOTIFICATION_TYPE.ICONLESS, notificationMsg);
-                serv.sendNotification(serv.NOTIFICATION_TYPE.ERROR, notificationMsg);
-                serv.sendNotification(serv.NOTIFICATION_TYPE.SUCCESS, notificationMsg);
-                serv.sendNotification(serv.NOTIFICATION_TYPE.WARNING, notificationMsg);
-                serv.sendNotification(serv.NOTIFICATION_TYPE.INFO, notificationMsg);
-                serv.sendNotification(serv.NOTIFICATION_TYPE.ICONLESS, notificationMsg);
+                serv.sendNotification(CS_NOTIFICATION_TYPE.ERROR, notificationMsg);
+                serv.sendNotification(CS_NOTIFICATION_TYPE.SUCCESS, notificationMsg);
+                serv.sendNotification(CS_NOTIFICATION_TYPE.WARNING, notificationMsg);
+                serv.sendNotification(CS_NOTIFICATION_TYPE.INFO, notificationMsg);
+                serv.sendNotification(CS_NOTIFICATION_TYPE.ICONLESS, notificationMsg);
+                serv.sendNotification(CS_NOTIFICATION_TYPE.ERROR, notificationMsg);
+                serv.sendNotification(CS_NOTIFICATION_TYPE.SUCCESS, notificationMsg);
+                serv.sendNotification(CS_NOTIFICATION_TYPE.WARNING, notificationMsg);
+                serv.sendNotification(CS_NOTIFICATION_TYPE.INFO, notificationMsg);
+                serv.sendNotification(CS_NOTIFICATION_TYPE.ICONLESS, notificationMsg);
                 expect(serv.getNotifications().length).toBe(10);
                 expect(serv.getNotifications()).toEqual([
-                    {error: true, message: notificationMsg},
-                    {success: true, message: notificationMsg},
-                    {warning: true, message: notificationMsg},
-                    {info: true, message: notificationMsg},
-                    {other: true, message: notificationMsg},
-                    {error: true, message: notificationMsg},
-                    {success: true, message: notificationMsg},
-                    {warning: true, message: notificationMsg},
-                    {info: true, message: notificationMsg},
-                    {other: true, message: notificationMsg}
+                    new CSNotification({error: true, message: notificationMsg}),
+                    new CSNotification({success: true, message: notificationMsg}),
+                    new CSNotification({warning: true, message: notificationMsg}),
+                    new CSNotification({info: true, message: notificationMsg}),
+                    new CSNotification({other: true, message: notificationMsg}),
+                    new CSNotification({error: true, message: notificationMsg}),
+                    new CSNotification({success: true, message: notificationMsg}),
+                    new CSNotification({warning: true, message: notificationMsg}),
+                    new CSNotification({info: true, message: notificationMsg}),
+                    new CSNotification({other: true, message: notificationMsg})
                 ]);
             });
             it('should trim the array once the 11th log is added', function () {
-                serv.sendNotification(serv.NOTIFICATION_TYPE.ERROR, notificationMsg);
-                serv.sendNotification(serv.NOTIFICATION_TYPE.SUCCESS, notificationMsg);
-                serv.sendNotification(serv.NOTIFICATION_TYPE.WARNING, notificationMsg);
-                serv.sendNotification(serv.NOTIFICATION_TYPE.INFO, notificationMsg);
-                serv.sendNotification(serv.NOTIFICATION_TYPE.ICONLESS, notificationMsg);
-                serv.sendNotification(serv.NOTIFICATION_TYPE.ERROR, notificationMsg);
-                serv.sendNotification(serv.NOTIFICATION_TYPE.SUCCESS, notificationMsg);
-                serv.sendNotification(serv.NOTIFICATION_TYPE.WARNING, notificationMsg);
-                serv.sendNotification(serv.NOTIFICATION_TYPE.INFO, notificationMsg);
-                serv.sendNotification(serv.NOTIFICATION_TYPE.ICONLESS, notificationMsg);
-                serv.sendNotification(serv.NOTIFICATION_TYPE.ERROR, notificationMsg);
+                serv.sendNotification(CS_NOTIFICATION_TYPE.ERROR, notificationMsg);
+                serv.sendNotification(CS_NOTIFICATION_TYPE.SUCCESS, notificationMsg);
+                serv.sendNotification(CS_NOTIFICATION_TYPE.WARNING, notificationMsg);
+                serv.sendNotification(CS_NOTIFICATION_TYPE.INFO, notificationMsg);
+                serv.sendNotification(CS_NOTIFICATION_TYPE.ICONLESS, notificationMsg);
+                serv.sendNotification(CS_NOTIFICATION_TYPE.ERROR, notificationMsg);
+                serv.sendNotification(CS_NOTIFICATION_TYPE.SUCCESS, notificationMsg);
+                serv.sendNotification(CS_NOTIFICATION_TYPE.WARNING, notificationMsg);
+                serv.sendNotification(CS_NOTIFICATION_TYPE.INFO, notificationMsg);
+                serv.sendNotification(CS_NOTIFICATION_TYPE.ICONLESS, notificationMsg);
+                serv.sendNotification(CS_NOTIFICATION_TYPE.ERROR, notificationMsg);
                 expect(serv.getNotifications().length).toBe(10);
                 expect(serv.getNotifications()).toEqual([
-                    {success: true, message: notificationMsg},
-                    {warning: true, message: notificationMsg},
-                    {info: true, message: notificationMsg},
-                    {other: true, message: notificationMsg},
-                    {error: true, message: notificationMsg},
-                    {success: true, message: notificationMsg},
-                    {warning: true, message: notificationMsg},
-                    {info: true, message: notificationMsg},
-                    {other: true, message: notificationMsg},
-                    {error: true, message: notificationMsg}
+                    new CSNotification({success: true, message: notificationMsg}),
+                    new CSNotification({warning: true, message: notificationMsg}),
+                    new CSNotification({info: true, message: notificationMsg}),
+                    new CSNotification({other: true, message: notificationMsg}),
+                    new CSNotification({error: true, message: notificationMsg}),
+                    new CSNotification({success: true, message: notificationMsg}),
+                    new CSNotification({warning: true, message: notificationMsg}),
+                    new CSNotification({info: true, message: notificationMsg}),
+                    new CSNotification({other: true, message: notificationMsg}),
+                    new CSNotification({error: true, message: notificationMsg})
                 ]);
             });
             it('should continue to trim the array as more are added', function () {
-                serv.sendNotification(serv.NOTIFICATION_TYPE.ERROR, notificationMsg);
-                serv.sendNotification(serv.NOTIFICATION_TYPE.SUCCESS, notificationMsg);
-                serv.sendNotification(serv.NOTIFICATION_TYPE.WARNING, notificationMsg);
-                serv.sendNotification(serv.NOTIFICATION_TYPE.INFO, notificationMsg);
-                serv.sendNotification(serv.NOTIFICATION_TYPE.ICONLESS, notificationMsg);
-                serv.sendNotification(serv.NOTIFICATION_TYPE.ERROR, notificationMsg);
-                serv.sendNotification(serv.NOTIFICATION_TYPE.SUCCESS, notificationMsg);
-                serv.sendNotification(serv.NOTIFICATION_TYPE.WARNING, notificationMsg);
-                serv.sendNotification(serv.NOTIFICATION_TYPE.INFO, notificationMsg);
-                serv.sendNotification(serv.NOTIFICATION_TYPE.ICONLESS, notificationMsg);
-                serv.sendNotification(serv.NOTIFICATION_TYPE.ERROR, notificationMsg);
-                serv.sendNotification(serv.NOTIFICATION_TYPE.SUCCESS, notificationMsg);
-                serv.sendNotification(serv.NOTIFICATION_TYPE.WARNING, notificationMsg);
-                serv.sendNotification(serv.NOTIFICATION_TYPE.INFO, notificationMsg);
+                serv.sendNotification(CS_NOTIFICATION_TYPE.ERROR, notificationMsg);
+                serv.sendNotification(CS_NOTIFICATION_TYPE.SUCCESS, notificationMsg);
+                serv.sendNotification(CS_NOTIFICATION_TYPE.WARNING, notificationMsg);
+                serv.sendNotification(CS_NOTIFICATION_TYPE.INFO, notificationMsg);
+                serv.sendNotification(CS_NOTIFICATION_TYPE.ICONLESS, notificationMsg);
+                serv.sendNotification(CS_NOTIFICATION_TYPE.ERROR, notificationMsg);
+                serv.sendNotification(CS_NOTIFICATION_TYPE.SUCCESS, notificationMsg);
+                serv.sendNotification(CS_NOTIFICATION_TYPE.WARNING, notificationMsg);
+                serv.sendNotification(CS_NOTIFICATION_TYPE.INFO, notificationMsg);
+                serv.sendNotification(CS_NOTIFICATION_TYPE.ICONLESS, notificationMsg);
+                serv.sendNotification(CS_NOTIFICATION_TYPE.ERROR, notificationMsg);
+                serv.sendNotification(CS_NOTIFICATION_TYPE.SUCCESS, notificationMsg);
+                serv.sendNotification(CS_NOTIFICATION_TYPE.WARNING, notificationMsg);
+                serv.sendNotification(CS_NOTIFICATION_TYPE.INFO, notificationMsg);
                 expect(serv.getNotifications().length).toBe(10);
                 expect(serv.getNotifications()).toEqual([
-                    {other: true, message: notificationMsg},
-                    {error: true, message: notificationMsg},
-                    {success: true, message: notificationMsg},
-                    {warning: true, message: notificationMsg},
-                    {info: true, message: notificationMsg},
-                    {other: true, message: notificationMsg},
-                    {error: true, message: notificationMsg},
-                    {success: true, message: notificationMsg},
-                    {warning: true, message: notificationMsg},
-                    {info: true, message: notificationMsg}
+                    new CSNotification({other: true, message: notificationMsg}),
+                    new CSNotification({error: true, message: notificationMsg}),
+                    new CSNotification({success: true, message: notificationMsg}),
+                    new CSNotification({warning: true, message: notificationMsg}),
+                    new CSNotification({info: true, message: notificationMsg}),
+                    new CSNotification({other: true, message: notificationMsg}),
+                    new CSNotification({error: true, message: notificationMsg}),
+                    new CSNotification({success: true, message: notificationMsg}),
+                    new CSNotification({warning: true, message: notificationMsg}),
+                    new CSNotification({info: true, message: notificationMsg})
                 ]);
             });
         });
@@ -262,16 +262,16 @@
                 serv.sendErrorNotification(notificationMsg + 11);
                 serv.sendErrorNotification(notificationMsg + 12);
                 expect(serv.getNotifications()).toEqual([
-                    {error: true, message: notificationMsg + 3},
-                    {error: true, message: notificationMsg + 4},
-                    {error: true, message: notificationMsg + 5},
-                    {error: true, message: notificationMsg + 6},
-                    {error: true, message: notificationMsg + 7},
-                    {error: true, message: notificationMsg + 8},
-                    {error: true, message: notificationMsg + 9},
-                    {error: true, message: notificationMsg + 10},
-                    {error: true, message: notificationMsg + 11},
-                    {error: true, message: notificationMsg + 12}
+                    new CSNotification({error: true, message: notificationMsg + 3}),
+                    new CSNotification({error: true, message: notificationMsg + 4}),
+                    new CSNotification({error: true, message: notificationMsg + 5}),
+                    new CSNotification({error: true, message: notificationMsg + 6}),
+                    new CSNotification({error: true, message: notificationMsg + 7}),
+                    new CSNotification({error: true, message: notificationMsg + 8}),
+                    new CSNotification({error: true, message: notificationMsg + 9}),
+                    new CSNotification({error: true, message: notificationMsg + 10}),
+                    new CSNotification({error: true, message: notificationMsg + 11}),
+                    new CSNotification({error: true, message: notificationMsg + 12})
                 ]);
             });
         });
@@ -320,16 +320,16 @@
                 serv.sendSuccessNotification(notificationMsg + 11);
                 serv.sendSuccessNotification(notificationMsg + 12);
                 expect(serv.getNotifications()).toEqual([
-                    {success: true, message: notificationMsg + 3},
-                    {success: true, message: notificationMsg + 4},
-                    {success: true, message: notificationMsg + 5},
-                    {success: true, message: notificationMsg + 6},
-                    {success: true, message: notificationMsg + 7},
-                    {success: true, message: notificationMsg + 8},
-                    {success: true, message: notificationMsg + 9},
-                    {success: true, message: notificationMsg + 10},
-                    {success: true, message: notificationMsg + 11},
-                    {success: true, message: notificationMsg + 12}
+                    new CSNotification({success: true, message: notificationMsg + 3}),
+                    new CSNotification({success: true, message: notificationMsg + 4}),
+                    new CSNotification({success: true, message: notificationMsg + 5}),
+                    new CSNotification({success: true, message: notificationMsg + 6}),
+                    new CSNotification({success: true, message: notificationMsg + 7}),
+                    new CSNotification({success: true, message: notificationMsg + 8}),
+                    new CSNotification({success: true, message: notificationMsg + 9}),
+                    new CSNotification({success: true, message: notificationMsg + 10}),
+                    new CSNotification({success: true, message: notificationMsg + 11}),
+                    new CSNotification({success: true, message: notificationMsg + 12})
                 ]);
             });
         });
@@ -377,16 +377,16 @@
                 serv.sendWarningNotification(notificationMsg + 11);
                 serv.sendWarningNotification(notificationMsg + 12);
                 expect(serv.getNotifications()).toEqual([
-                    {warning: true, message: notificationMsg + 3},
-                    {warning: true, message: notificationMsg + 4},
-                    {warning: true, message: notificationMsg + 5},
-                    {warning: true, message: notificationMsg + 6},
-                    {warning: true, message: notificationMsg + 7},
-                    {warning: true, message: notificationMsg + 8},
-                    {warning: true, message: notificationMsg + 9},
-                    {warning: true, message: notificationMsg + 10},
-                    {warning: true, message: notificationMsg + 11},
-                    {warning: true, message: notificationMsg + 12}
+                    new CSNotification({warning: true, message: notificationMsg + 3}),
+                    new CSNotification({warning: true, message: notificationMsg + 4}),
+                    new CSNotification({warning: true, message: notificationMsg + 5}),
+                    new CSNotification({warning: true, message: notificationMsg + 6}),
+                    new CSNotification({warning: true, message: notificationMsg + 7}),
+                    new CSNotification({warning: true, message: notificationMsg + 8}),
+                    new CSNotification({warning: true, message: notificationMsg + 9}),
+                    new CSNotification({warning: true, message: notificationMsg + 10}),
+                    new CSNotification({warning: true, message: notificationMsg + 11}),
+                    new CSNotification({warning: true, message: notificationMsg + 12})
                 ]);
             });
         });
@@ -434,16 +434,16 @@
                 serv.sendInfoNotification(notificationMsg + 11);
                 serv.sendInfoNotification(notificationMsg + 12);
                 expect(serv.getNotifications()).toEqual([
-                    {info: true, message: notificationMsg + 3},
-                    {info: true, message: notificationMsg + 4},
-                    {info: true, message: notificationMsg + 5},
-                    {info: true, message: notificationMsg + 6},
-                    {info: true, message: notificationMsg + 7},
-                    {info: true, message: notificationMsg + 8},
-                    {info: true, message: notificationMsg + 9},
-                    {info: true, message: notificationMsg + 10},
-                    {info: true, message: notificationMsg + 11},
-                    {info: true, message: notificationMsg + 12}
+                    new CSNotification({info: true, message: notificationMsg + 3}),
+                    new CSNotification({info: true, message: notificationMsg + 4}),
+                    new CSNotification({info: true, message: notificationMsg + 5}),
+                    new CSNotification({info: true, message: notificationMsg + 6}),
+                    new CSNotification({info: true, message: notificationMsg + 7}),
+                    new CSNotification({info: true, message: notificationMsg + 8}),
+                    new CSNotification({info: true, message: notificationMsg + 9}),
+                    new CSNotification({info: true, message: notificationMsg + 10}),
+                    new CSNotification({info: true, message: notificationMsg + 11}),
+                    new CSNotification({info: true, message: notificationMsg + 12})
                 ]);
             });
         });
@@ -491,16 +491,16 @@
                 serv.sendIconlessNotification(notificationMsg + 11);
                 serv.sendIconlessNotification(notificationMsg + 12);
                 expect(serv.getNotifications()).toEqual([
-                    {other: true, message: notificationMsg + 3},
-                    {other: true, message: notificationMsg + 4},
-                    {other: true, message: notificationMsg + 5},
-                    {other: true, message: notificationMsg + 6},
-                    {other: true, message: notificationMsg + 7},
-                    {other: true, message: notificationMsg + 8},
-                    {other: true, message: notificationMsg + 9},
-                    {other: true, message: notificationMsg + 10},
-                    {other: true, message: notificationMsg + 11},
-                    {other: true, message: notificationMsg + 12}
+                    new CSNotification({other: true, message: notificationMsg + 3}),
+                    new CSNotification({other: true, message: notificationMsg + 4}),
+                    new CSNotification({other: true, message: notificationMsg + 5}),
+                    new CSNotification({other: true, message: notificationMsg + 6}),
+                    new CSNotification({other: true, message: notificationMsg + 7}),
+                    new CSNotification({other: true, message: notificationMsg + 8}),
+                    new CSNotification({other: true, message: notificationMsg + 9}),
+                    new CSNotification({other: true, message: notificationMsg + 10}),
+                    new CSNotification({other: true, message: notificationMsg + 11}),
+                    new CSNotification({other: true, message: notificationMsg + 12})
                 ]);
             });
         });
@@ -564,7 +564,8 @@
                 serv.changeNotificationMaximum(2);
                 expect(serv.getNotifications().length).toBe(2);
                 expect(serv.getNotifications()).toEqual(
-                    [{error: true, message: 'test 2'}, {error: true, message: 'test 3'}]);
+                    [new CSNotification({error: true, message: 'test 2'}),
+                        new CSNotification({error: true, message: 'test 3'})]);
             });
             it('should not retrieve any notifications once they have been discarded on max change.', function () {
                 serv.sendErrorNotification('test 1');
@@ -574,7 +575,7 @@
                 serv.changeNotificationMaximum(1);
                 serv.changeNotificationMaximum(2);
                 expect(serv.getNotifications().length).toBe(1);
-                expect(serv.getNotifications()).toEqual([{error: true, message: 'test 3'}]);
+                expect(serv.getNotifications()).toEqual([new CSNotification({error: true, message: 'test 3'})]);
             });
         });
 
@@ -590,16 +591,16 @@
             });
             it('should return the most recent notifications when the threshold has been passed', function () {
                 var expResult = [
-                    {warning: true, message: notificationMessage + 2},
-                    {info: true, message: notificationMessage + 2},
-                    {error: true, message: notificationMessage + 3},
-                    {success: true, message: notificationMessage + 3},
-                    {warning: true, message: notificationMessage + 3},
-                    {info: true, message: notificationMessage + 3},
-                    {error: true, message: notificationMessage + 4},
-                    {success: true, message: notificationMessage + 4},
-                    {warning: true, message: notificationMessage + 4},
-                    {info: true, message: notificationMessage + 4}
+                    new CSNotification({warning: true, message: notificationMessage + 2}),
+                    new CSNotification({info: true, message: notificationMessage + 2}),
+                    new CSNotification({error: true, message: notificationMessage + 3}),
+                    new CSNotification({success: true, message: notificationMessage + 3}),
+                    new CSNotification({warning: true, message: notificationMessage + 3}),
+                    new CSNotification({info: true, message: notificationMessage + 3}),
+                    new CSNotification({error: true, message: notificationMessage + 4}),
+                    new CSNotification({success: true, message: notificationMessage + 4}),
+                    new CSNotification({warning: true, message: notificationMessage + 4}),
+                    new CSNotification({info: true, message: notificationMessage + 4})
                 ];
                 serv.sendErrorNotification(notificationMessage + 1);
                 serv.sendSuccessNotification(notificationMessage + 1);
@@ -705,6 +706,28 @@
                 expect(Object.isFrozen(customFontAwesomeSet)).toBe(true);
             });
         });
+        describe('Function: setEllipsisLength', function () {
+            it('should have a default value of 43', function () {
+                expect(CSNotification.prototype.ellipsisLength).toBe(43);
+            });
+            it('should set the ellipsis value to the correct value if it is a number >= 3', function () {
+                serv.setEllipsisLength(6);
+                expect(CSNotification.prototype.ellipsisLength).toBe(6);
+            });
+            it('should do nothing if the ellipsis value is undefined, NaN, null or < 3', function () {
+                serv.setEllipsisLength(6);
+                expect(CSNotification.prototype.ellipsisLength).toBe(6);
+                serv.setEllipsisLength();
+                expect(CSNotification.prototype.ellipsisLength).toBe(6);
+                serv.setEllipsisLength(null);
+                expect(CSNotification.prototype.ellipsisLength).toBe(6);
+                serv.setEllipsisLength(undefined);
+                expect(CSNotification.prototype.ellipsisLength).toBe(6);
+                serv.setEllipsisLength(2);
+                expect(CSNotification.prototype.ellipsisLength).toBe(6);
+            });
+        });
+
     });
 }());
 

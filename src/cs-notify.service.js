@@ -1,3 +1,73 @@
+/**
+ * @ngdoc object
+ * @name CS_NOTIFICATION_TYPE
+ * @propertyOf cs-notify.service:csNotificationService
+ * @type {Object}
+ *
+ * @description
+ * A basic enumeration object containing the different notifications which can be sent to the cs-notifications
+ * directive:
+ *   * csNotificationService.CS_NOTIFICATION_TYPE.ERROR:  Indicates an error notification is being sent
+ *   * csNotificationService.CS_NOTIFICATION_TYPE.WARNING:  Indicates a warning notification is being sent
+ *   * csNotificationService.CS_NOTIFICATION_TYPE.SUCCESS:  Indicates a success notification is being sent
+ *   * csNotificationService.CS_NOTIFICATION_TYPE.INFO:  Indicates an info notification is being sent
+ *   * csNotificationService.CS_NOTIFICATION_TYPE.ICONLESS:  Indicates an iconless notification is being sent
+ */
+CS_NOTIFICATION_TYPE = Object.freeze({
+    ERROR: 'error',
+    WARNING: 'warning',
+    SUCCESS: 'success',
+    INFO: 'info',
+    ICONLESS: 'other'
+});
+/**
+ * @ngdoc object
+ * @name CSNotification
+ * @type {Object}
+ * @param {Object} data A data object containing the type of notification (error, warning, success, info, other)
+ *                      marked as true and the message for the notification.
+ * @constructor
+ */
+function CSNotification(data) {
+    if (!data) {
+        data = {};
+    }
+    this[CS_NOTIFICATION_TYPE.ERROR] = data[CS_NOTIFICATION_TYPE.ERROR];
+    this[CS_NOTIFICATION_TYPE.WARNING] = data[CS_NOTIFICATION_TYPE.WARNING];
+    this[CS_NOTIFICATION_TYPE.SUCCESS] = data[CS_NOTIFICATION_TYPE.SUCCESS];
+    this[CS_NOTIFICATION_TYPE.INFO] = data[CS_NOTIFICATION_TYPE.INFO];
+    this[CS_NOTIFICATION_TYPE.ICONLESS] = data[CS_NOTIFICATION_TYPE.ICONLESS];
+    this.message = data.message;
+}
+
+CSNotification.prototype.ellipsisLength = 43;
+/**
+ * @ngdoc method
+ * @name getShortMessage
+ * @methodOf CSNotification
+ * @returns {String} The short, possibly ellipsised, message for the notification
+ */
+CSNotification.prototype.getShortMessage = function () {
+    if (!this.message) {
+        return '';
+    } else if (this.message.length > this.ellipsisLength) {
+        return this.message.substring(0, (this.ellipsisLength - 3)) + '...';
+    } else {
+        return this.message;
+    }
+};
+/**
+ * @ngdoc method
+ * @name getFullMessage
+ * @methodOf CSNotification
+ * @returns {String} The full, non-ellipsised, non-shortened message for the notification.
+ */
+CSNotification.prototype.getFullMessage = function () {
+    if (!this.message) {
+        return '';
+    }
+    return this.message;
+};
 angular.module('cs-notify')
     /**
      * @ngdoc service
@@ -21,37 +91,44 @@ angular.module('cs-notify')
     .factory('csNotificationService', ['$rootScope', '$log', function ($rootScope, $log) {
         var serv = {};
 
-        serv.maxNotifications = 10;
         var notifications = [];
-
-        /**
-         * @ngdoc object
-         * @name NOTIFICATION_TYPE
-         * @propertyOf cs-notify.service:csNotificationService
-         * @type {Object}
-         *
-         * @description
-         * A basic enumeration object containing the different notifications which can be sent to the cs-notifications
-         * directive:
-         *   * csNotificationService.NOTIFICATION_TYPE.ERROR:  Indicates an error notification is being sent
-         *   * csNotificationService.NOTIFICATION_TYPE.WARNING:  Indicates a warning notification is being sent
-         *   * csNotificationService.NOTIFICATION_TYPE.SUCCESS:  Indicates a success notification is being sent
-         *   * csNotificationService.NOTIFICATION_TYPE.INFO:  Indicates an info notification is being sent
-         *   * csNotificationService.NOTIFICATION_TYPE.ICONLESS:  Indicates an iconless notification is being sent
-         */
-        serv.NOTIFICATION_TYPE = Object.freeze({
-            ERROR: 'error',
-            WARNING: 'warning',
-            SUCCESS: 'success',
-            INFO: 'info',
-            ICONLESS: 'other'
-        });
 
         function sliceNotifications() {
             var start = notifications.length - serv.maxNotifications;
             var end = notifications.length + 1;
             notifications = notifications.slice(start, end);
         }
+
+        /**
+         * @ngdoc property
+         * @name maxNotifications
+         * @propertyOf cs-notify.service:csNotificationService
+         * @type {number}
+         * @description
+         * The maximum number of notifications which will be retained before the oldest notification is permanently
+         * discarded.
+         */
+        serv.maxNotifications = 10;
+        /**
+         * @ngdoc property
+         * @name DEFAULT_ELLIPSIS_PT
+         * @propertyOf cs-notify.service:csNotificationService
+         * @type {number}
+         * @description
+         * The default string length (43 characters) before the string will be shortened and have `...` appended in a
+         * notification short message.
+         */
+        serv.DEFAULT_ELLIPSIS_PT = 43;
+        /**
+         * @ngdoc property
+         * @name ellipsisLength
+         * @propertyOf cs-notify.service:csNotificationService
+         * @type {number}
+         * @description
+         * The current string length after which the string will be shortened and have `...` appended in a notification
+         * short message.  This value ***MUST NOT*** be < 3.
+         */
+        serv.ellipsisLength = serv.DEFAULT_ELLIPSIS_PT;
 
         /**
          * @ngdoc method
@@ -107,6 +184,9 @@ angular.module('cs-notify')
          * permanently.
          */
         serv.getNotifications = function () {
+            if (!notifications) {
+                notifications = [];
+            }
             return angular.copy(notifications);
         };
 
@@ -114,7 +194,7 @@ angular.module('cs-notify')
          * @ngdoc method
          * @name sendNotification
          * @methodOf cs-notify.service:csNotificationService
-         * @param {NOTIFICATION_TYPE} notificationType The type of notification to send.
+         * @param {CS_NOTIFICATION_TYPE} notificationType The type of notification to send.
          * @param {string} msg The message to send to the cs-notifications directive.
          * @description
          * Emits a `cs-notify-new-notification` message to all registered listeners on the rootScope and then appends
@@ -126,11 +206,12 @@ angular.module('cs-notify')
         serv.sendNotification = function (notificationType, msg) {
             var evtData = {message: msg};
             evtData[notificationType] = true;
-            $rootScope.$emit('cs-notify-new-notification', evtData);
-            notifications.push(evtData);
+            var notification = new CSNotification(evtData);
+            notifications.push(notification);
             if (notifications.length > serv.maxNotifications) {
                 sliceNotifications();
             }
+            $rootScope.$emit('cs-notify-new-notification', notification);
         };
 
         /**
@@ -144,7 +225,7 @@ angular.module('cs-notify')
          * See sendNotification for more information.
          */
         serv.sendErrorNotification = function (msg) {
-            serv.sendNotification(serv.NOTIFICATION_TYPE.ERROR, msg);
+            serv.sendNotification(CS_NOTIFICATION_TYPE.ERROR, msg);
         };
 
         /**
@@ -158,7 +239,7 @@ angular.module('cs-notify')
          * See sendNotification for more information.
          */
         serv.sendWarningNotification = function (msg) {
-            serv.sendNotification(serv.NOTIFICATION_TYPE.WARNING, msg);
+            serv.sendNotification(CS_NOTIFICATION_TYPE.WARNING, msg);
         };
 
         /**
@@ -172,7 +253,7 @@ angular.module('cs-notify')
          * See sendNotification for more information.
          */
         serv.sendSuccessNotification = function (msg) {
-            serv.sendNotification(serv.NOTIFICATION_TYPE.SUCCESS, msg);
+            serv.sendNotification(CS_NOTIFICATION_TYPE.SUCCESS, msg);
         };
 
         /**
@@ -186,7 +267,7 @@ angular.module('cs-notify')
          * See sendNotification for more information.
          */
         serv.sendInfoNotification = function (msg) {
-            serv.sendNotification(serv.NOTIFICATION_TYPE.INFO, msg);
+            serv.sendNotification(CS_NOTIFICATION_TYPE.INFO, msg);
         };
 
         /**
@@ -200,7 +281,7 @@ angular.module('cs-notify')
          * See sendNotification for more information.
          */
         serv.sendIconlessNotification = function (msg) {
-            serv.sendNotification(serv.NOTIFICATION_TYPE.ICONLESS, msg);
+            serv.sendNotification(CS_NOTIFICATION_TYPE.ICONLESS, msg);
         };
 
         /**
@@ -289,6 +370,41 @@ angular.module('cs-notify')
          */
         serv.bootstrapGlyphiconIconSet = serv.createIconSetDefinition('glyphicon', 'glyphicon-ban-circle',
             'glyphicon-warning-sign', 'glyphicon-ok-circle', 'glyphicon-info-sign');
+
+        /**
+         * @ngdoc method
+         * @name setEllipsisLength
+         * @methodOf cs-notify.service:csNotificationService
+         * @param {number} ellipsisPoint The length of the string, past which an ellipsis will be created.
+         * @description
+         * Sets the maximum length of a string before the string will be trimmed to __ellipsisPoint - 3__ and then have
+         * `...` appended to it when calling CSNotification.getShortMessage().  If any of:
+         * 1. No value; or
+         * 2. A non-numerical value (e.g. `"Hello"`) value; or
+         * 3. A value < 3
+         *
+         * are provided, then no change will occur to the ellipsis point.
+         *
+         * ## Examples
+         *
+         * Assume the ellipsis length is set to 6:
+         *
+         * <pre>
+         *     csNotificationService.setEllipsisLength(6);
+         * </pre>
+         *
+         * The output of the strings "Hi", "Hi You" and "Hi There" for CSNotification.getShortMessage() would be:
+         * 1. Hi
+         * 2. Hi You
+         * 3. Hi ...
+         */
+        serv.setEllipsisLength = function (ellipsisPoint) {
+            var pt = parseInt(ellipsisPoint);
+            if (isNaN(pt) || !pt || pt < 3) {
+                return;
+            }
+            CSNotification.prototype.ellipsisLength = pt;
+        };
 
         return serv;
     }]);

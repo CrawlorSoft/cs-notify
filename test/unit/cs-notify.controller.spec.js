@@ -3,12 +3,14 @@
     describe('Controller: CSNotificationsController', function () {
         beforeEach(module('cs-notify'));
 
-        var ctrl, rootScope, scope;
+        var ctrl, rootScope, scope, csns;
 
-        beforeEach(inject(function($controller, $rootScope) {
+        beforeEach(inject(function ($controller, $rootScope, _csNotificationService_) {
             rootScope = $rootScope;
             scope = rootScope.$new();
-            ctrl = $controller('CSNotificationsController', {$rootScope: rootScope, $scope: scope});
+            csns = _csNotificationService_;
+            ctrl = $controller('CSNotificationsController',
+                {$rootScope: rootScope, $scope: scope, csNotificationService: csns});
         }));
 
         describe('Initialization', function() {
@@ -39,29 +41,25 @@
 
         describe('Function: cs-notify-new-notification', function () {
             it('should create a new notification on an appropriate $emit', function() {
-                rootScope.$emit('cs-notify-new-notification', {error: true, message: 'Short test message'});
+                csns.sendErrorNotification('Short test message');
                 rootScope.$apply();
-                expect(ctrl.recentNotifications.length).toBe(2);
+                expect(ctrl.recentNotifications.length).toBe(1);
             });
             it('should not create anything if an incorrect event is $emitted', function() {
                 rootScope.$emit('new-not', {error: true, message: 'Short test message'});
                 rootScope.$apply();
-                expect(ctrl.recentNotifications.length).toBe(1);
+                expect(ctrl.recentNotifications.length).toBe(0);
             });
         });
 
         describe('Function: mostRecent()', function() {
             it('should retrieve the dummy Notification initially', function() {
                 var notification = ctrl.mostRecent();
-                expect(notification.error).toBe(false);
-                expect(notification.warning).toBe(false);
-                expect(notification.info).toBe(false);
-                expect(notification.success).toBe(false);
-                expect(notification.message).toBe('');
+                expect(notification).not.toBeDefined();
                 expect(ctrl.receivedNewEvent()).toBe(false);
             });
             it('should retrieve the newest Notification after it is added', function() {
-                rootScope.$emit('cs-notify-new-notification', {error: true, message: 'Short test message'});
+                csns.sendErrorNotification('Short test message');
                 rootScope.$apply();
                 var notification = ctrl.mostRecent();
                 expect(notification.error).toBe(true);
@@ -96,7 +94,7 @@
 
         describe('Function: Notification.getFullMessage()', function() {
             it('should return the empty string if the message is undefined', function() {
-                rootScope.$emit('cs-notify-new-notification', {error: true});
+                csns.sendErrorNotification();
                 rootScope.$apply();
                 var noti = ctrl.mostRecent();
                 expect(noti.getFullMessage()).toBe('');
@@ -104,7 +102,7 @@
                 expect(noti.message).not.toBeDefined();
             });
             it('should return the empty string if the message is null', function() {
-                rootScope.$emit('cs-notify-new-notification', {error: true, message: null});
+                csns.sendErrorNotification(null);
                 rootScope.$apply();
                 var noti = ctrl.mostRecent();
                 expect(noti.getFullMessage()).toBe('');
@@ -112,7 +110,7 @@
                 expect(noti.message).toBeNull();
             });
             it('should return the exact message if it is less than 43 characters long.', function() {
-                rootScope.$emit('cs-notify-new-notification', {error: true, message: 'Short test message'});
+                csns.sendErrorNotification('Short test message');
                 rootScope.$apply();
                 var noti = ctrl.mostRecent();
                 expect(noti.getFullMessage()).toBe('Short test message');
@@ -120,46 +118,37 @@
                 expect(noti.message).toBe('Short test message');
             });
             it('should return the exact message if it is exactly 43 characters long.', function() {
-                var evtData = {
-                    error: true,
-                    message: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
-                };
-                rootScope.$emit('cs-notify-new-notification', evtData);
+                var message = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
+                csns.sendErrorNotification(message);
                 rootScope.$apply();
                 var noti = ctrl.mostRecent();
-                expect(noti.getFullMessage()).toBe(evtData.message);
+                expect(noti.getFullMessage()).toBe(message);
                 // Ensure it doesn't affect the original message
-                expect(noti.message).toBe(evtData.message);
+                expect(noti.message).toBe(message);
             });
             it('should return the full message if it is exactly 44 characters long.', function() {
-                var evtData = {
-                    error: true,
-                    message: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
-                };
-                rootScope.$emit('cs-notify-new-notification', evtData);
+                var message = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
+                csns.sendErrorNotification(message);
                 rootScope.$apply();
                 var noti = ctrl.mostRecent();
-                expect(noti.getFullMessage()).toBe(evtData.message);
+                expect(noti.getFullMessage()).toBe(message);
                 // Ensure it doesn't affect the original message
-                expect(noti.message).toBe(evtData.message);
+                expect(noti.message).toBe(message);
             });
             it('should return the full message if it is greater than 44 characters long.', function() {
-                var evtData = {
-                    error: true,
-                    message: 'ababababababababababababababababababababababababab'
-                };
-                rootScope.$emit('cs-notify-new-notification', evtData);
+                var message = 'ababababababababababababababababababababababababab';
+                csns.sendErrorNotification(message);
                 rootScope.$apply();
                 var noti = ctrl.mostRecent();
-                expect(noti.getFullMessage()).toBe(evtData.message);
+                expect(noti.getFullMessage()).toBe(message);
                 // Ensure it doesn't affect the original message
-                expect(noti.message).toBe(evtData.message);
+                expect(noti.message).toBe(message);
             });
         });
 
         describe('Function:  Notification.getShortMessage()', function() {
             it('should return the empty string if the message is undefined', function() {
-                rootScope.$emit('cs-notify-new-notification', {error: true});
+                csns.sendErrorNotification();
                 rootScope.$apply();
                 var noti = ctrl.mostRecent();
                 expect(noti.getShortMessage()).toBe('');
@@ -167,7 +156,7 @@
                 expect(noti.message).not.toBeDefined();
             });
             it('should return the empty string if the message is null', function() {
-                rootScope.$emit('cs-notify-new-notification', {error: true, message: null});
+                csns.sendErrorNotification(null);
                 rootScope.$apply();
                 var noti = ctrl.mostRecent();
                 expect(noti.getShortMessage()).toBe('');
@@ -175,48 +164,40 @@
                 expect(noti.message).toBeNull();
             });
             it('should return the exact message if it is less than 43 characters long.', function() {
-                rootScope.$emit('cs-notify-new-notification', {error: true, message: 'Short test message'});
+                var message = 'Short test message';
+                csns.sendErrorNotification(message);
                 rootScope.$apply();
                 var noti = ctrl.mostRecent();
-                expect(noti.getShortMessage()).toBe('Short test message');
+                expect(noti.getShortMessage()).toBe(message);
                 // Ensure it doesn't affect the original message
-                expect(noti.message).toBe('Short test message');
+                expect(noti.message).toBe(message);
             });
             it('should return the exact message if it is exactly 43 characters long.', function() {
-                var evtData = {
-                    error: true,
-                    message: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
-                };
-                rootScope.$emit('cs-notify-new-notification', evtData);
+                var message = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
+                csns.sendErrorNotification(message);
                 rootScope.$apply();
                 var noti = ctrl.mostRecent();
-                expect(noti.getShortMessage()).toBe(evtData.message);
+                expect(noti.getShortMessage()).toBe(message);
                 // Ensure it doesn't affect the original message
-                expect(noti.message).toBe(evtData.message);
+                expect(noti.message).toBe(message);
             });
             it('should return the ellipsised message if it is exactly 44 characters long.', function() {
-                var evtData = {
-                    error: true,
-                    message: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
-                };
-                rootScope.$emit('cs-notify-new-notification', evtData);
+                var message = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
+                csns.sendErrorNotification(message);
                 rootScope.$apply();
                 var noti = ctrl.mostRecent();
-                expect(noti.getShortMessage()).toBe(evtData.message.substring(0, 40) + '...');
+                expect(noti.getShortMessage()).toBe(message.substring(0, 40) + '...');
                 // Ensure it doesn't affect the original message
-                expect(noti.message).toBe(evtData.message);
+                expect(noti.message).toBe(message);
             });
             it('should return the ellipsised message if it is greater than 44 characters long.', function() {
-                var evtData = {
-                    error: true,
-                    message: 'ababababababababababababababababababababababababab'
-                };
-                rootScope.$emit('cs-notify-new-notification', evtData);
+                var message = 'ababababababababababababababababababababababababab';
+                csns.sendErrorNotification(message);
                 rootScope.$apply();
                 var noti = ctrl.mostRecent();
-                expect(noti.getShortMessage()).toBe(evtData.message.substring(0, 40) + '...');
+                expect(noti.getShortMessage()).toBe(message.substring(0, 40) + '...');
                 // Ensure it doesn't affect the original message
-                expect(noti.message).toBe(evtData.message);
+                expect(noti.message).toBe(message);
             });
         });
 
@@ -226,17 +207,11 @@
                 expect(ctrl.recentNotifications).toEqual(ctrl.getInvertedNotifications());
             });
             it('should return the inverted notifications array after a few events are received', function () {
-                var evtData = {
-                    error: true,
-                    message: 'ababababababababababababababababababababababababab'
-                };
-                var evtData1 = {
-                    success: true,
-                    message: 'abc'
-                };
-                rootScope.$emit('cs-notify-new-notification', evtData);
+                var message = 'ababababababababababababababababababababababababab',
+                    message1 = 'abc';
+                csns.sendErrorNotification(message);
                 rootScope.$apply();
-                rootScope.$emit('cs-notify-new-notification', evtData1);
+                csns.sendSuccessNotification(message1);
                 rootScope.$apply();
                 expect(ctrl.getInvertedNotifications()).not.toEqual(ctrl.recentNotifications);
                 expect(ctrl.getInvertedNotifications()[0]).toEqual(ctrl.mostRecent());
