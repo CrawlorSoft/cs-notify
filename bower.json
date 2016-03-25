@@ -1,0 +1,38 @@
+{
+  "name": "cs-status",
+  "version": "1.0.0",
+  "homepage": "https://github.com/CrawlorSoft/cs-status",
+  "authors": [
+    "Dan Taylor <dan.taylor@crawlorsoft.com>"
+  ],
+  "description": "A notification and status bar library for AngularJS applications",
+  "keywords": [
+    "notifications",
+    "notification",
+    "status",
+    "bar",
+    "popup",
+    "pop",
+    "up",
+    "notification",
+    "management",
+    "status",
+    "information"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "src",
+    "artifacts"
+  ],
+  "dependencies": {
+    "angular": "1.5.0"
+  },
+  "devDependencies": {
+    "angular-mocks": "1.5.0"
+  }
+}
