@@ -82,9 +82,7 @@ angular.module('cs-notify')
      * application to remain constantly visible to the user.
      */
     .directive('csNotifications', [
-    '$log',
-    function($log) {
-        $log.debug('Creating Directive...');
+        function () {
         return {
             restrict:       'E',
             controller:     'CSNotificationsController',
