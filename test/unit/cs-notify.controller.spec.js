@@ -14,6 +14,7 @@
         describe('Initialization', function() {
             it('should have the correct controller functions and variables', function() {
                 expect(ctrl.recentNotifications).toBeDefined();
+                expect(ctrl.invertedNotifications).toBeDefined();
                 expect(ctrl.mostRecent).toBeDefined();
                 expect(typeof ctrl.mostRecent).toBe('function');
                 expect(ctrl.receivedNewEvent).toBeDefined();
@@ -216,6 +217,32 @@
                 expect(noti.getShortMessage()).toBe(evtData.message.substring(0, 40) + '...');
                 // Ensure it doesn't affect the original message
                 expect(noti.message).toBe(evtData.message);
+            });
+        });
+
+        describe('Function: getInvertedNotifications', function () {
+            it('should return the notifications array initially', function () {
+                // Default notifications array contains an empty notification
+                expect(ctrl.recentNotifications).toEqual(ctrl.getInvertedNotifications());
+            });
+            it('should return the inverted notifications array after a few events are received', function () {
+                var evtData = {
+                    error: true,
+                    message: 'ababababababababababababababababababababababababab'
+                };
+                var evtData1 = {
+                    success: true,
+                    message: 'abc'
+                };
+                rootScope.$emit('cs-notify-new-notification', evtData);
+                rootScope.$apply();
+                rootScope.$emit('cs-notify-new-notification', evtData1);
+                rootScope.$apply();
+                expect(ctrl.getInvertedNotifications()).not.toEqual(ctrl.recentNotifications);
+                expect(ctrl.getInvertedNotifications()[0]).toEqual(ctrl.mostRecent());
+                expect(ctrl.getInvertedNotifications()[0].success).toBe(true);
+                expect(ctrl.getInvertedNotifications()[1].error).toBe(true);
+                expect(ctrl.getInvertedNotifications()).toEqual(ctrl.recentNotifications.reverse());
             });
         });
 

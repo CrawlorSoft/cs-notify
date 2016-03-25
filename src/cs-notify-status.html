@@ -1,6 +1,17 @@
 <div class="cs-status-area">
-    <span data-ng-class="{'cs-error': csnctrl.mostRecent().error, 'cs-warning': csnctrl.mostRecent().warning, 'cs-success': csnctrl.mostRecent().success, 'cs-info': csnctrl.mostRecent().info, 'new-event': csnctrl.receivedNewEvent()}">
-        <i data-ng-attr-class="{{csnctrl.getIconType(csnctrl.mostRecent())}}"></i>
-        {{csnctrl.mostRecent().getShortMessage()}}
-    </span>
+    <input type="checkbox" id="status-trigger" class="status-trigger" data-ng-model="csnctrl.displayAllEvents">
+    <label for="status-trigger">
+        <div ng-if="!csnctrl.displayAllEvents"
+             data-ng-class="{'cs-error': csnctrl.mostRecent().error, 'cs-warning': csnctrl.mostRecent().warning, 'cs-success': csnctrl.mostRecent().success, 'cs-info': csnctrl.mostRecent().info, 'new-event': csnctrl.receivedNewEvent()}">
+            <i data-ng-attr-class="{{csnctrl.getIconType(csnctrl.mostRecent())}}"></i>
+            {{csnctrl.mostRecent().getShortMessage()}}
+        </div>
+        <div ng-if="csnctrl.displayAllEvents">
+            <div ng-repeat="notification in csnctrl.getInvertedNotifications()"
+                 data-ng-class="{'cs-error': notification.error, 'cs-warning': notification.warning, 'cs-success': notification.success, 'cs-info': notification.info, 'new-event': notificationvent(), 'even-div': $even, 'odd-div': $odd}">
+                <i data-ng-attr-class="{{csnctrl.getIconType(notification)}}"></i>
+                {{notification.getFullMessage()}}
+            </div>
+        </div>
+    </label>
 </div>

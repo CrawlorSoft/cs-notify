@@ -6,6 +6,7 @@ angular.module('cs-notify').controller('CSNotificationsController', [
         var self = this;
 
         self.newEventReceived = false;
+        self.displayAllEvents = false;
 
         try {
             $scope.ellipsisLength = $scope.ellipsisLength ? parseInt($scope.ellipsisLength) : 43;
@@ -38,6 +39,7 @@ angular.module('cs-notify').controller('CSNotificationsController', [
             return this.message;
         };
         self.recentNotifications = [new Notification({error: false, warning: false, success: false, info: false, message: ''})];
+        self.invertedNotifications = angular.copy(self.recentNotifications).reverse();
 
         self.getIconType = function (notification) {
             var classString = '';
@@ -64,10 +66,15 @@ angular.module('cs-notify').controller('CSNotificationsController', [
             return self.newEventReceived;
         };
 
+        self.getInvertedNotifications = function () {
+            return self.invertedNotifications;
+        };
+
         $rootScope.$on('cs-notify-new-notification', function (evt, evtData) {
             evt.stopPropagation();
             self.newEventReceived = false;
             self.recentNotifications.push(new Notification(evtData));
+            self.invertedNotifications = angular.copy(self.recentNotifications).reverse();
             self.newEventReceived = true;
             $timeout(function() { self.newEventReceived = false; }, 2500);
         });
