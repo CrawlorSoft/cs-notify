@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/cs-notify.module.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">all files</a> / <a href="index.html">src/</a> cs-notify.module.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">95.65% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>22/23</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">87.5% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>7/8</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>5/5</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">95.65% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>22/23</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">286×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">286×</span>
+<span class="cline-any cline-yes">286×</span>
+<span class="cline-any cline-yes">286×</span>
+<span class="cline-any cline-yes">286×</span>
+<span class="cline-any cline-yes">286×</span>
+<span class="cline-any cline-yes">286×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">83×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">83×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">83×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">83×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">(function () {
+    'use strict';
+    /**
+     * @ngdoc overview
+     * @name cs-notify
+     * @module cs-notify
+     * @description
+     *
+     * # Installation
+     *
+     * First, include `cs-notify.js` in your HTML:
+     * ```html
+     * &lt;script src="angular.js"&gt;&lt;/script&gt;
+     * &lt;script src="cs-notify.js"&gt;&lt;/script&gt;
+     * ```
+     *
+     * CS-Notify can be installed from one of the following locations:
+     *
+     * * [Bower](http://bower.io) `bower install cs-notify --save-dev`
+     *
+     * * [NPM](http://npmjs.com) `npm install cs-notify --save-dev`
+     *
+     * After installation, the module can be loaded into your application by indicating it is a dependent module:
+     * ```js
+     * angular.module('app', ['cs-notify']);
+     * ```
+     *
+     * The CS-Notification directive and service are now ready to be used to help prevent annoying pop-ups and popovers
+     * from hiding application content while still informing users of important status updates.
+     *
+     * # Usage
+     *
+     * The cs-notifications directive allows the specification of an icon-set to prepend to incoming notifications without
+     * tying the user down to any one particular font or icon family.  The only restriction is that the icon set must
+     * currently be an icon font such as [Bootstrap Glyphicons](http://getbootstrap.com/components/#glyphicons) or
+     * [Font Awesome](http://fontawesome.io).
+     *
+     * For detailed usage information on the {@link cs-notify.directive:cs-notifications cs-notifications} directive, please
+     * see its specific documentation.
+     */
+    angular.module('cs-notify', [])
+        /**
+         * @ngdoc object
+         * @name cs-notify.object:CS_NOTIFICATION_TYPE
+         * @type {Object}
+         *
+         * @description
+         * A basic enumeration object containing the different notifications which can be sent to the cs-notifications
+         * directive:
+         *   * csNotificationService.CS_NOTIFICATION_TYPE.ERROR:  Indicates an error notification is being sent
+         *   * csNotificationService.CS_NOTIFICATION_TYPE.WARNING:  Indicates a warning notification is being sent
+         *   * csNotificationService.CS_NOTIFICATION_TYPE.SUCCESS:  Indicates a success notification is being sent
+         *   * csNotificationService.CS_NOTIFICATION_TYPE.INFO:  Indicates an info notification is being sent
+         *   * csNotificationService.CS_NOTIFICATION_TYPE.ICONLESS:  Indicates an iconless notification is being sent
+         *
+         * @private
+         */
+        .value('CS_NOTIFICATION_TYPE', Object.freeze({
+            ERROR: 'error',
+            WARNING: 'warning',
+            SUCCESS: 'success',
+            INFO: 'info',
+            ICONLESS: 'other'
+        }))
+        .factory('CSNotification', ['CS_NOTIFICATION_TYPE', function (CS_NOTIFICATION_TYPE) {
+            /**
+             * @ngdoc object
+             * @name cs-notify.object:CSNotification
+             * @param {Object} data A data object containing the type of notification (error, warning, success, info, other)
+             *                      marked as true and the message for the notification.
+             * @constructor
+             * @classdesc The CSNotification class is responsible for passing information between services and
+             *              controllers in the cs-notify module.
+             */
+            function CSNotification(data) {
+                <span class="missing-if-branch" title="if path not taken" >I</span>if (!data) {
+<span class="cstat-no" title="statement not covered" >                    data = {};</span>
+                }
+                this[CS_NOTIFICATION_TYPE.ERROR] = data[CS_NOTIFICATION_TYPE.ERROR];
+                this[CS_NOTIFICATION_TYPE.WARNING] = data[CS_NOTIFICATION_TYPE.WARNING];
+                this[CS_NOTIFICATION_TYPE.SUCCESS] = data[CS_NOTIFICATION_TYPE.SUCCESS];
+                this[CS_NOTIFICATION_TYPE.INFO] = data[CS_NOTIFICATION_TYPE.INFO];
+                this[CS_NOTIFICATION_TYPE.ICONLESS] = data[CS_NOTIFICATION_TYPE.ICONLESS];
+                this.message = data.message;
+            }
+&nbsp;
+            CSNotification.prototype.ellipsisLength = 43;
+            /**
+             * @ngdoc method
+             * @name getShortMessage
+             * @methodOf cs-notify.object:CSNotification
+             * @returns {String} The short, possibly ellipsised, message for the notification
+             */
+            CSNotification.prototype.getShortMessage = function () {
+                if (!this.message) {
+                    return '';
+                } else if (this.message.length &gt; this.ellipsisLength) {
+                    return this.message.substring(0, (this.ellipsisLength - 3)) + '...';
+                } else {
+                    return this.message;
+                }
+            };
+            /**
+             * @ngdoc method
+             * @name getFullMessage
+             * @methodOf cs-notify.object:CSNotification
+             * @returns {String} The full, non-ellipsised, non-shortened message for the notification.
+             */
+            CSNotification.prototype.getFullMessage = function () {
+                if (!this.message) {
+                    return '';
+                }
+                return this.message;
+            };
+&nbsp;
+            return (CSNotification);
+        }]);
+}());
+&nbsp;
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Mar 28 2016 18:43:03 GMT-0400 (EDT)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

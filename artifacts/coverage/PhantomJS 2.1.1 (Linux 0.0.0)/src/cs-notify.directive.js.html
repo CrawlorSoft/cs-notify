@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/cs-notify.directive.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">all files</a> / <a href="index.html">src/</a> cs-notify.directive.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">66.67% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>2/3</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/0</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">50% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>1/2</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">66.67% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>2/3</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line medium'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">(function () {
+    'use strict';
+    angular.module('cs-notify')
+        /**
+         * @ngdoc directive
+         * @name cs-notify.directive:cs-notifications
+         * @restrict E
+         * @scope
+         * @param {number} [ellipsisLength] The length the string may be before it becomes shortened
+         *                                  and has '...' appended.
+         * @param {Object}  iconSet An Object containing the classPrefix and [(error)(warning)(success)(info)]Icon
+         *                          values.
+         *
+         * @description
+         * Creates a new cs-notifications area which will display the newest notification which has been received by the
+         * system. This directive makes use of the CSNotificationsController in order to gather events and notifications
+         * for display to the user.
+         *
+         * ## Basic Usage (Default Icon Sets)
+         *
+         * There are default icon set definitions provided by the cs-notifications-service for Bootstraps Glyphicons and
+         * Font Awesome.  These can be used by setting a scope or controller variable to the desired icon set:
+         *
+         * &lt;pre&gt;
+         *  angular.module('myApp', ['cs-notify'])
+         *    .controller('SomeController', ['cs-notification-service',
+         *      function(csns) {
+         *        this.iconSet = csns.fontAwesomeIconSet;
+         *        // or: this.iconSet = csns.bootstrapGlyphiconsIconSet;
+         *        // other code as necessary
+         *      }]);
+         * &lt;/pre&gt;
+         *
+         * and passing it into the cs-notifications directive as follows:
+         * &lt;pre&gt;
+         *
+         *   &lt;html&gt;
+         *       &lt;body data-ng-app="myApp" data-ng-controller="SomeController as sc"&gt;
+         *           &lt;!-- Other views, etc. go here --&gt;
+         *          &lt;div id="#footer"&gt;
+         *              &lt;cs-notifications data-icon-set="sc.iconSet"&gt;&lt;/cs-notifications&gt;
+         *          &lt;/div&gt;
+         *       &lt;/body&gt;
+         *   &lt;/html&gt;
+         *
+         * &lt;/pre&gt;
+         *
+         * ## Advanced Usage (Custom Icon Sets)
+         *
+         * If a custom icon set is desired, it can be defined with the following JSON object (on the scope or controller):
+         *
+         * &lt;pre&gt;
+         *
+         *  angular.module('myApp', ['cs-notify']).controller('SomeController', [
+         *    '$scope',
+         *    function($scope) {
+         *      $scope.customIconSet = {
+         *        classPrefix:  '&lt;insert prefix here&gt;', // e.g. 'fa fa-fw'.
+         *        errorIcon:    '&lt;insert error icon here&gt;', // e.g. fa-times.
+         *        warningIcon:  '&lt;insert warning icon here&gt;', // e.g. fa-exclamation.
+         *        successIcon:  '&lt;insert success icon here&gt;', // e.g. fa-check.
+         *        infoIcon:     '&lt;insert success icon here&gt;', // e.g. fa-info-circle.
+         *      };
+         *    }]);
+         * &lt;/pre&gt;
+         *
+         * and then passed into the cs-notifications directives `iconSet` attribute:
+         *
+         * &lt;pre&gt;
+         *
+         *   &lt;html&gt;
+         *       &lt;body data-ng-app="myApp" data-ng-controller="SomeController"&gt;
+         *           &lt;!-- data goes here --&gt;
+         *          &lt;div id="#footer"&gt;
+         *              &lt;cs-notifications data-icon-set="customIconSet"&gt;&lt;/cs-notifications&gt;
+         *          &lt;/div&gt;
+         *       &lt;/body&gt;
+         *   &lt;/html&gt;
+         *
+         * &lt;/pre&gt;
+         *
+         * # Suggested Usage
+         *
+         * It is suggested that the `&lt;cs-notifications&gt;` tag be used in a sticky footer on the main page of the web
+         * application to remain constantly visible to the user.
+         */
+        .directive('csNotifications', [
+<span class="fstat-no" title="function not covered" >            function () {</span>
+<span class="cstat-no" title="statement not covered" >                return {</span>
+                    restrict: 'E',
+                    controller: 'CSNotificationsController',
+                    controllerAs: 'csnctrl',
+                    templateUrl: 'cs-notify-status.html',
+                    scope: {
+                        ellipsisLength: '@?',
+                        iconSet: '='
+                    }
+                };
+            }
+        ]);
+}());
+&nbsp;
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Mar 28 2016 18:43:03 GMT-0400 (EDT)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

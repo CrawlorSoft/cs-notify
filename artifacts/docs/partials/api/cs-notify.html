@@ -1,0 +1,29 @@
+<h1><code ng:non-bindable=""></code>
+<div><span class="hint"></span>
+</div>
+</h1>
+<div><div class="cs-notify-page"><h2 id="installation" id="installation">Installation</h2>
+<p>First, include <code>cs-notify.js</code> in your HTML:</p>
+<pre><code class="lang-html">&lt;script src=&quot;angular.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;cs-notify.js&quot;&gt;&lt;/script&gt;
+</code></pre>
+<p>CS-Notify can be installed from one of the following locations:</p>
+<ul>
+<li><p><a href="http://bower.io">Bower</a> <code>bower install cs-notify --save-dev</code></p>
+</li>
+<li><p><a href="http://npmjs.com">NPM</a> <code>npm install cs-notify --save-dev</code></p>
+</li>
+</ul>
+<p>After installation, the module can be loaded into your application by indicating it is a dependent module:</p>
+<pre><code class="lang-js">angular.module(&#39;app&#39;, [&#39;cs-notify&#39;]);
+</code></pre>
+<p>The CS-Notification directive and service are now ready to be used to help prevent annoying pop-ups and popovers
+from hiding application content while still informing users of important status updates.</p>
+<h2 id="usage" id="usage">Usage</h2>
+<p>The cs-notifications directive allows the specification of an icon-set to prepend to incoming notifications without
+tying the user down to any one particular font or icon family.  The only restriction is that the icon set must
+currently be an icon font such as <a href="http://getbootstrap.com/components/#glyphicons">Bootstrap Glyphicons</a> or
+<a href="http://fontawesome.io">Font Awesome</a>.</p>
+<p>For detailed usage information on the <a href="#/api/cs-notify.directive:cs-notifications">cs-notifications</a> directive, please
+see its specific documentation.</p>
+</div></div>

@@ -1,0 +1,187 @@
+<h1><code ng:non-bindable="">csNotificationService</code>
+<div><span class="hint">service in module <code ng:non-bindable="">cs-notify</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="cs-notify-service-page cs-notify-service-csnotificationservice-page"><p>The <code>csNotificationService</code> provides:</p>
+<ul>
+<li>Event notification methods for error, warning, success and info messages; and</li>
+<li>Event notification methods for messages which are not prefixed by an icon; and</li>
+<li>A custom icon set creation method; and</li>
+<li>A default log of the last ten (10) notification messages of any type; and</li>
+<li>The ability to adjust the number of messages held in memory to be more or less than 10; and</li>
+<li>The ability to retrieve the last <em>x</em> messages; and</li>
+<li>The ability to clear the message list; and</li>
+<li>A default <a href="http://fontawesome.io">Font Awesome</a> icon set definition; and</li>
+<li>A default <a href="http://getbootstrap.com/components/#glyphicons">Bootstrap Glyphicon</a> icon set definition.</li>
+</ul>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">csNotificationService($rootScope, $log);</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>$rootScope</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="cs-notify-service-page cs-notify-service-csnotificationservice-page"><p>The rootScope to use to emit notification messages.</p>
+</div></td></tr><tr><td>$log</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="cs-notify-service-page cs-notify-service-csnotificationservice-page"><p>The log object to use in the case of errors.</p>
+</div></td></tr></tbody></table></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_changenotificationmaximum">changeNotificationMaximum(max)</h3>
+<div class="changenotificationmaximum"><div class="changenotificationmaximum-page"><p>Adjusts the maximum number of notification events which should be retained in memory at any given point to
+any value between 0 and infinity.</p>
+<p>If the maximum chosen is less than the current number of retained notifications, the excess notifications
+will be immediately removed from the queue in a First In First Out (FIFO) order with no way to retrieve the
+messages in the future, even if the maximum is increased immediately to its previous value or higher.</p>
+<p>If the maximum chosen is greater than or equal to the current number of retained notifications, no
+notifications will be lost until the new threshold is passed.</p>
+</div><h5 id="methods_changenotificationmaximum_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>max</td><td><a href="" class="label type-hint type-hint-number">number</a></td><td><div class="changenotificationmaximum-page"><p>The maximum number of notifications the <code>csNotificationService</code> should retain in memory
+at any given point.</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_clearnotifications">clearNotifications()</h3>
+<div class="clearnotifications"><div class="clearnotifications-page"><p>Permanently clears any notifications which have been generated / emitted by this service with no chance of
+retrieval.</p>
+</div></div>
+</li>
+<li><h3 id="methods_createiconsetdefinition">createIconSetDefinition([prefix], [errorIcon], [warningIcon], [successIcon], [infoIcon])</h3>
+<div class="createiconsetdefinition"><div class="createiconsetdefinition-page"><p>Creates a new icon set definition which can then be passed in to the
+<a href="#/api/cs-notify.directive:cs-notifications">cs-notifications</a> directive to display custom icons inside the
+status area.</p>
+<p>The object returned will be frozen and contain the provided classPrefix and icon values, or they will be
+undefined depending if no value is passed into the function.</p>
+<h4 id="usage" id="methods_createiconsetdefinition_usage">Usage</h4>
+<h5 id="an-empty-icon-set" id="methods_createiconsetdefinition_usage_an-empty-icon-set">An Empty Icon Set</h5>
+<p>To create an empty icon set (e.g. no icon will ever be displayed with a message):</p>
+<pre class="prettyprint linenums">
+  var emptyIconSet = csNotificationService.createIconSetDefinition();
+  // emptyIconSet will be the equivalent of:  Object.freeze({});
+</pre>
+<h5 id="a-customized-font-awesome-icon-set" id="methods_createiconsetdefinition_usage_a-customized-font-awesome-icon-set">A Customized Font Awesome Icon Set</h5>
+<p>To create a customized font-awesome icon set without fixed width icons and the following icons:</p>
+<ul>
+<li><strong>Error Icon</strong>: Stop icon in a solid circle (e.g. the old VCR stop symbol)</li>
+<li><strong>Warning Icon</strong>: An asterisk</li>
+<li><strong>Success Icon</strong>: A beer (because everyone drinks beer on success)</li>
+<li><strong>Info Icon</strong>: A lightning bolt</li>
+</ul>
+<p>the following call would accomplish this:</p>
+<pre class="prettyprint linenums">
+  var customFontAwesomeSet = csNotificationService.createIconSetDefinition('fa', 'fa-stop-circle', 'fa-asterisk', 'fa-beer', 'fa-bolt');
+</pre>
+</div><h5 id="methods_createiconsetdefinition_usage_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>[prefix]</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="createiconsetdefinition-page"><p>The CSS class prefix required to use the icons (e.g. <code>glyphicon</code> or <code>fa fa-fw</code>).</p>
+</div></td></tr><tr><td>[errorIcon]</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="createiconsetdefinition-page"><p>The full name of the error icon (e.g. <code>fa-exclamation-circle</code>)</p>
+</div></td></tr><tr><td>[warningIcon]</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="createiconsetdefinition-page"><p>The full name of the warning icon (e.g. <code>fa-exclamation-triangle</code>)</p>
+</div></td></tr><tr><td>[successIcon]</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="createiconsetdefinition-page"><p>The full name of the success icon (e.g. <code>fa-check-circle</code>)</p>
+</div></td></tr><tr><td>[infoIcon]</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="createiconsetdefinition-page"><p>The full name of the info icon (e.g. <code>fa-info-circle</code>)</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_getnotifications">getNotifications()</h3>
+<div class="getnotifications"><div class="getnotifications-page"><p>Returns a copy of the last <em>maxNotifications</em> notification objects which have been sent by the
+<code>csNotificationService</code>.  If <em>maxNotifications</em> was recently adjusted to a higher value, any notifications
+which were rotated out before the increase in the notification limit will not be reported and are lost
+permanently.</p>
+</div><h5 id="methods_getnotifications_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-array">Array</a></td><td><div class="getnotifications-page"><p>An array of the last <em>x</em> notification objects.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_senderrornotification">sendErrorNotification(msg)</h3>
+<div class="senderrornotification"><div class="senderrornotification-page"><p>A basic helper method to send the provided message as an error notification.</p>
+<p>See sendNotification for more information.</p>
+</div><h5 id="methods_senderrornotification_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>msg</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="senderrornotification-page"><p>The message to send as an error notification.</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_sendiconlessnotification">sendIconlessNotification(msg)</h3>
+<div class="sendiconlessnotification"><div class="sendiconlessnotification-page"><p>A basic helper method to send the provided message as an iconless notification.</p>
+<p>See sendNotification for more information.</p>
+</div><h5 id="methods_sendiconlessnotification_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>msg</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="sendiconlessnotification-page"><p>The message to send as an iconless notification.</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_sendinfonotification">sendInfoNotification(msg)</h3>
+<div class="sendinfonotification"><div class="sendinfonotification-page"><p>A basic helper method to send the provided message as an info notification.</p>
+<p>See sendNotification for more information.</p>
+</div><h5 id="methods_sendinfonotification_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>msg</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="sendinfonotification-page"><p>The message to send as an info notification.</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_sendnotification">sendNotification(notificationType, msg)</h3>
+<div class="sendnotification"><div class="sendnotification-page"><p>Emits a <code>cs-notify-new-notification</code> message to all registered listeners on the rootScope and then appends
+the new notification data to the notification log.</p>
+<p>If there are more than the permitted number of notifications in the notification log, the first <em>x</em> necessary
+to bring the total number to the maximum permitted are removed.</p>
+</div><h5 id="methods_sendnotification_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>notificationType</td><td><a href="" class="label type-hint type-hint-cs_notification_type">CS_NOTIFICATION_TYPE</a></td><td><div class="sendnotification-page"><p>The type of notification to send.</p>
+</div></td></tr><tr><td>msg</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="sendnotification-page"><p>The message to send to the cs-notifications directive.</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_sendsuccessnotification">sendSuccessNotification(msg)</h3>
+<div class="sendsuccessnotification"><div class="sendsuccessnotification-page"><p>A basic helper method to send the provided message as a success notification.</p>
+<p>See sendNotification for more information.</p>
+</div><h5 id="methods_sendsuccessnotification_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>msg</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="sendsuccessnotification-page"><p>The message to send as an success notification.</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_sendwarningnotification">sendWarningNotification(msg)</h3>
+<div class="sendwarningnotification"><div class="sendwarningnotification-page"><p>A basic helper method to send the provided message as a warning notification.</p>
+<p>See sendNotification for more information.</p>
+</div><h5 id="methods_sendwarningnotification_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>msg</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="sendwarningnotification-page"><p>The message to send as an warning notification.</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_setellipsislength">setEllipsisLength(ellipsisPoint)</h3>
+<div class="setellipsislength"><div class="setellipsislength-page"><p>Sets the maximum length of a string before the string will be trimmed to <strong>ellipsisPoint - 3</strong> and then have
+<code>...</code> appended to it when calling CSNotification.getShortMessage().  If any of:</p>
+<ol>
+<li>No value; or</li>
+<li>A non-numerical value (e.g. <code>&quot;Hello&quot;</code>) value; or</li>
+<li>A value &lt; 3</li>
+</ol>
+<p>are provided, then no change will occur to the ellipsis point.</p>
+<h5 id="examples" id="methods_setellipsislength_examples">Examples</h5>
+<p>Assume the ellipsis length is set to 6:</p>
+<pre class="prettyprint linenums">
+    csNotificationService.setEllipsisLength(6);
+</pre>
+<p>The output of the strings &quot;Hi&quot;, &quot;Hi You&quot; and &quot;Hi There&quot; for CSNotification.getShortMessage() would be:</p>
+<ol>
+<li>Hi</li>
+<li>Hi You</li>
+<li>Hi ...</li>
+</ol>
+</div><h5 id="methods_setellipsislength_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>ellipsisPoint</td><td><a href="" class="label type-hint type-hint-number">number</a></td><td><div class="setellipsislength-page"><p>The length of the string, past which an ellipsis will be created.</p>
+</div></td></tr></tbody></table></div>
+</li>
+</ul>
+</div>
+<div class="member property"><h2 id="properties">Properties</h2>
+<ul class="properties"><li><h3 id="properties_default_ellipsis_pt">DEFAULT_ELLIPSIS_PT</h3>
+<div class="default_ellipsis_pt"><div class="default-ellipsis-pt-page"><p>The default string length (43 characters) before the string will be shortened and have <code>...</code> appended in a
+notification short message.</p>
+</div></div>
+</li>
+<li><h3 id="properties_bootstrapglyphiconiconset">bootstrapGlyphiconIconSet</h3>
+<div class="bootstrapglyphiconiconset"><div class="bootstrapglyphiconiconset-page"><p>The default bootstrap glyphicon icon set which is set to use the Bootstrap specific glyphicons, with the
+following icon definitions:</p>
+<ul>
+<li><strong>errorIcon</strong>: glyphicon-ban-circle</li>
+<li><strong>warningIcon</strong>: glyphicon-warning-sign</li>
+<li><strong>successIcon</strong>: glyphicon-ok-circle</li>
+<li><strong>infoIcon</strong>: glyphicon-info-sign</li>
+</ul>
+</div></div>
+</li>
+<li><h3 id="properties_ellipsislength">ellipsisLength</h3>
+<div class="ellipsislength"><div class="ellipsislength-page"><p>The current string length after which the string will be shortened and have <code>...</code> appended in a notification
+short message.  This value <strong><em>MUST NOT</em></strong> be &lt; 3.</p>
+</div></div>
+</li>
+<li><h3 id="properties_fontawesomeiconset">fontAwesomeIconSet</h3>
+<div class="fontawesomeiconset"><div class="fontawesomeiconset-page"><p>The default font-awesome icon set which is set to use the Font Awesome fixed width icons, with the following
+icon definitions:</p>
+<ul>
+<li><strong>errorIcon</strong>: <a href="http://fontawesome.io/icon/exclamation-circle/">fa-exclamation-circle</a></li>
+<li><strong>warningIcon</strong>: <a href="http://fontawesome.io/icon/exclamation-triangle/">fa-exclamation-triangle</a></li>
+<li><strong>successIcon</strong>: <a href="http://fontawesome.io/icon/check-circle/">fa-check-circle</a></li>
+<li><strong>infoIcon</strong>: <a href="http://fontawesome.io/icon/info-circle/">fa-info-circle</a></li>
+</ul>
+</div></div>
+</li>
+<li><h3 id="properties_maxnotifications">maxNotifications</h3>
+<div class="maxnotifications"><div class="maxnotifications-page"><p>The maximum number of notifications which will be retained before the oldest notification is permanently
+discarded.</p>
+</div></div>
+</li>
+</ul>
+</div>
+</div>
