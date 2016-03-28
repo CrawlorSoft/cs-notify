@@ -12,6 +12,8 @@ var htmlmin     = require('gulp-htmlmin');
 var docs        = require('gulp-ngdocs');
 var less        = require('gulp-less');
 var Server      = require('karma').Server;
+var concat = require('gulp-concat');
+var uglify = require('gulp-uglify');
 
 gulp.task('clean', function() {
     del(['dist/', '.tmp/', 'artifacts/']);
@@ -43,11 +45,28 @@ gulp.task('test', function() {
     }).start();
 });
 
-gulp.task('compile', function () {
-    console.log('TODO:  Add compile steps');
+var csNotifySrcs = [
+    'src/cs-notify.module.js',
+    'src/cs-notify.service.js',
+    'src/cs-notify.controller.js',
+    'src/cs-notify.directive.js',
+    '.tmp/cs-notify-status.js'
+];
+
+gulp.task('compile:norm', function () {
+    return gulp.src(csNotifySrcs)
+        .pipe(concat('cs-notify.js'))
+        .pipe(gulp.dest('./dist'));
+});
+
+gulp.task('compile:min', function () {
+    return gulp.src(csNotifySrcs)
+        .pipe(uglify())
+        .pipe(concat('cs-notify.min.js'))
+        .pipe(gulp.dest('./dist'));
 });
 
 // Intentionally do not clean before a build
-gulp.task('default', ['templates:dist', 'styles:dist', 'docs', 'compile', 'test'], function () {
+gulp.task('default', ['templates:dist', 'styles:dist', 'docs', 'compile:norm', 'compile:min', 'test'], function () {
 });
 
