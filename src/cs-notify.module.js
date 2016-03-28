@@ -16,10 +16,9 @@
      *
      * CS-Notify can be installed from one of the following locations:
      *
-     * * [Bower](http://bower.io)
-     *      ___Will be documented once the first release is completed.___
-     * * [NPM](http://npmjs.com)
-     *      ___Will be documented once the first release is completed.___
+     * * [Bower](http://bower.io) `bower install cs-notify --save-dev`
+     *
+     * * [NPM](http://npmjs.com) `npm install cs-notify --save-dev`
      *
      * After installation, the module can be loaded into your application by indicating it is a dependent module:
      * ```js

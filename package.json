@@ -1,6 +1,6 @@
 {
   "name": "cs-notify",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A notification and status bar library for AngularJS applications",
   "main": "gulpfile.js",
   "directories": {
