@@ -29,9 +29,9 @@
   "author": "Daniel Taylor <dan.taylor@crawlorsoft.com> (http://www.crawlorsoft.com)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/CrawlorSoft/cs-status/issues"
+    "url": "https://github.com/CrawlorSoft/cs-notify/issues"
   },
-  "homepage": "https://github.com/CrawlorSoft/cs-status",
+  "homepage": "https://github.com/CrawlorSoft/cs-notify",
   "dependencies": {
     "angular": "^1.5.0"
   },
