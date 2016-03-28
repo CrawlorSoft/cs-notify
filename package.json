@@ -1,5 +1,5 @@
 {
-  "name": "cs-status",
+  "name": "cs-notify",
   "version": "1.0.0",
   "description": "A notification and status bar library for AngularJS applications",
   "main": "gulpfile.js",
